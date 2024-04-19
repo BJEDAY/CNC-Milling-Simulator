@@ -12,40 +12,40 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Shaders\frag.hlsl">
+    <None Update="Shaders\frag.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\fragDot.hlsl">
+    <None Update="Shaders\fragDot.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\fragLine.hlsl">
+    <None Update="Shaders\fragLine.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\geometryDot.hlsl">
+    <None Update="Shaders\geometryDot.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\geometryLine.hlsl">
+    <None Update="Shaders\geometryLine.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\phongFrag.hlsl">
+    <None Update="Shaders\phongFrag.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\phongVert.hlsl">
+    <None Update="Shaders\phongVert.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\terrainFrag.hlsl">
+    <None Update="Shaders\terrainFrag.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\terrainVert.hlsl">
+    <None Update="Shaders\terrainVert.glsl">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\vert.hlsl">
+    <None Update="Shaders\vert.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\vertDot.hlsl">
+    <None Update="Shaders\vertDot.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Update="Shaders\vertLine.hlsl">
+    <None Update="Shaders\vertLine.glsl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>

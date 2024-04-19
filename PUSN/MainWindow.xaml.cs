@@ -48,26 +48,28 @@ namespace PUSN
         Terrain terrain;
         Cutter cutter;
 
-        public const string ShaderVertLoc = "Shaders/vert.hlsl";
-        public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
+
+        public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
+        //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
+        public const string ShaderFragLoc = "../../../Shaders/frag.glsl";  //Albo może lepiej podać od razu ściężkę bezpośrednio do źródełka??? :)
 
         //thick line geometry shader source
-        public const string ShaderVertLocLine = "Shaders/vertLine.hlsl";
-        public const string ShaderGeoLocLine = "Shaders/geometryLine.hlsl";
-        public const string ShaderFragLocLine = "Shaders/fragLine.hlsl";
+        public const string ShaderVertLocLine = "../../../Shaders/vertLine.glsl";
+        public const string ShaderGeoLocLine = "../../../Shaders/geometryLine.glsl";
+        public const string ShaderFragLocLine = "../../../Shaders/fragLine.glsl";
 
         //dot geometry shader source
-        public const string ShaderVertLocDot = "Shaders/vertDot.hlsl";
-        public const string ShaderGeoLocDot = "Shaders/geometryDot.hlsl";
-        public const string ShaderFragLocDot = "Shaders/fragDot.hlsl";
+        public const string ShaderVertLocDot = "../../../Shaders/vertDot.glsl";
+        public const string ShaderGeoLocDot = "../../../Shaders/geometryDot.glsl";
+        public const string ShaderFragLocDot = "../../../Shaders/fragDot.glsl";
 
         //phong basic shader
-        public const string ShaderVertLocPhong = "Shaders/phongVert.hlsl";
-        public const string ShaderFragLocPhong = "Shaders/phongFrag.hlsl";
+        public const string ShaderVertLocPhong = "../../../Shaders/phongVert.glsl";
+        public const string ShaderFragLocPhong = "../../../Shaders/phongFrag.glsl";
 
         //terrain heightmap sampling shader
-        public const string ShaderVertLocTerrain = "Shaders/terrainVert.hlsl";
-        public const string ShaderFragLocTerrain = "Shaders/terrainFrag.hlsl";
+        public const string ShaderVertLocTerrain = "../../../Shaders/terrainVert.glsl";
+        public const string ShaderFragLocTerrain = "../../../Shaders/terrainFrag.glsl";
 
         public MainWindow()
         {
@@ -146,8 +148,6 @@ namespace PUSN
             dotShader = new ShaderGeometry(ShaderVertLocDot, ShaderFragLocDot, ShaderGeoLocDot);
             phongShader = new Shader(ShaderVertLocPhong, ShaderFragLocPhong);
             terrainShader = new Shader(ShaderVertLocTerrain, ShaderFragLocTerrain);
-
-
 
             //phong shader light position and color are setup once and used globally for diffrent objects.
             //Althought viewPos is changed for all objects in every frame and objectColor every frame for every object using phong.
