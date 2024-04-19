@@ -17,6 +17,7 @@ namespace PUSN.SceneModels
         Vector3 blockSize;
         public Vector3 start;
         public Vector3 end;
+        public bool Spherical;
         public MillingTool(Vector3 start, Vector3 end, float r, Vector3 blockSize)
         {
             s = new SceneModels.Dot(start, r);
@@ -33,9 +34,19 @@ namespace PUSN.SceneModels
 
         public void Draw(ShaderGeometry dotShader, ShaderGeometry lineShader)
         {
+            if(Spherical)
+            {
+                dotShader.SetInt("Spherical", 1);
+                lineShader.SetInt("Spherical", 1);
+            }
+            else
+            {
+                dotShader.SetInt("Spherical", 0);
+                lineShader.SetInt("Spherical", 0);
+            }
             s.Draw(dotShader);
-            line.Draw(lineShader);
-            e.Draw(dotShader);
+            //line.Draw(lineShader);
+            //e.Draw(dotShader);
         }
 
         public void Update(Vector3 start, Vector3 end, float r)

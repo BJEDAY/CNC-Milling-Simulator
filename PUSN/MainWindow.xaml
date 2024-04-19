@@ -98,7 +98,7 @@
                         <TextBox Text="{Binding ElementName=SimSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
                         <Slider  Style="{StaticResource RadiusSlider}" Name="SimSpeed" Value="0.5"/>
                     </DockPanel>
-                    <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5"/>
+                    <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5" Click="StartSimulationButton_Click"/>
                     <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5"/>
                 </StackPanel>
             </GroupBox>

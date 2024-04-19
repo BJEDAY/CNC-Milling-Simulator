@@ -26,9 +26,15 @@ namespace PUSN.SceneModels
         public Vector3 Translation { get; set; }
         public Vector3 Scale { get; set; }
 
+        public Vector3 BlockSize { get; set; }
+
         float[] vertices; int[] indices; float[] normals;
 
-        Texture heightMap;
+        public Texture heightMap;
+
+        MillingTool tool;
+
+        int FrameBufferHandle;
 
         float[] heights;
         float[,] intHeights;
@@ -43,6 +49,11 @@ namespace PUSN.SceneModels
             //heights = new float[Res.X*Res.Y];
             intHeights = new float[Res.X+1,Res.Y+1];
 
+            BlockSize = new Vector3(300, 300, 50);   //x,y,z
+
+            tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, BlockSize);
+
+
             //for (int i=0;i<Res.X;i++)
             //{
             //    for(int j=0;j<Res.Y;j++)
@@ -55,7 +66,7 @@ namespace PUSN.SceneModels
             {
                 for (int j = 0; j <= Res.Y; j++)
                 {
-                    intHeights[i, j] = 10f;
+                    intHeights[i, j] = 0f;
                 }
             }
 
@@ -69,17 +80,43 @@ namespace PUSN.SceneModels
             //    intHeights[125, i] = 11f;
             //}
             
-            intHeights[15, 5] = 11f;
-            intHeights[15, 6] = 12f;
-            intHeights[15, 7] = 13f;
+            //intHeights[15, 5] = 11f;
+            //intHeights[15, 6] = 12f;
+            //intHeights[15, 7] = 13f;
 
             //heightMap = new Texture(heights,Res.X,Res.Y);   
-            heightMap = new Texture(intHeights,0);   
+            heightMap = new Texture(intHeights,0);
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
+            GenerateFramebuffer();
             GenerateVAO();
             UpdateModelMatrix();
         }
-        
+
+        private void GenerateFramebuffer()
+        {
+            FrameBufferHandle = GL.GenFramebuffer();
+            GL.BindFramebuffer(FramebufferTarget.FramebufferExt, FrameBufferHandle);
+            GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,heightMap.Handle,0);
+
+            // error check
+            FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.FramebufferExt);
+            if(status != FramebufferErrorCode.FramebufferComplete &&
+                status != FramebufferErrorCode.FramebufferCompleteExt)
+            {
+                Console.WriteLine("Error creating framebuffer: {0}", status);
+            }
+        }
+
+        public void RenderToHeight(Vector3 start, Vector3 end,float r, ShaderGeometry geo, ShaderGeometry line)
+        {
+            tool.Update(start,end,r);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
+            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            GL.Viewport(0, 0, Res.X, Res.Y);
+            GL.BindTexture(TextureTarget.Texture2D, heightMap.Handle);
+            tool.Draw(geo, line);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+        }
         public void UpdateParameters(Vector2 s, Vector2i r)
         {
             Size = s; Res = r;

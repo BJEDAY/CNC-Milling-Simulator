@@ -43,6 +43,7 @@ namespace PUSN
         Terrain terrain;
         Cutter cutter;
 
+
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
         public const string ShaderFragLoc = "../../../Shaders/frag.glsl";  //Albo może lepiej podać od razu ściężkę bezpośrednio do źródełka??? :)
@@ -76,11 +77,11 @@ namespace PUSN
             };
             OpenTkControl.Start(settings);
 
-
+            SetupObjects();
             SetupOpenGL();
             SetupShaders();
             SetupCamera();
-            SetupObjects();
+            
         }
         //
 
@@ -107,6 +108,11 @@ namespace PUSN
             cutter.UpdateModelMatrix();
         }
 
+        private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
+        {
+            RenderToTexture(new Vector3(-55f, 0f, -30), new Vector3(-30f, 25f, -30), 50f);
+        }
+
         private void SetupCamera()
         {
             //Initialize camera object
@@ -120,7 +126,7 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-10, -20, 20);
+            lightPos = new Vector3(-10, -20, 50);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);
@@ -144,6 +150,9 @@ namespace PUSN
             terrainShader.Use();
             terrainShader.SetVec3("lightPos", lightPos);
             terrainShader.SetVec3("lightColor", lightColor);
+
+            dotShader.SetInt("heights", terrain.heightMap.sampler);
+            thickLineShader.SetInt("heights",terrain.heightMap.sampler);
         }
         private void OpenTkControl_OnRender(TimeSpan obj)
         {
@@ -155,6 +164,12 @@ namespace PUSN
 
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);
+        }
+
+        private void RenderToTexture(Vector3 start,  Vector3 end, float r)
+        {
+            terrain.RenderToHeight(start, end, r, dotShader, thickLineShader);
+            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)

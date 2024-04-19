@@ -1,5 +1,6 @@
 ﻿#version 420 core
-out vec4 FragColor;
+//out vec4 FragColor;
+out float Height;
 
 in FInput
 {
@@ -10,6 +11,12 @@ in FInput
 uniform float Radius;
 uniform mat4 transform;
 uniform int Spherical;    //if tool shape is Sphere then Spherical =1 else Spherical =0 
+uniform sampler2D heights;
+
+vec2 GetTexPos(vec2 screen)
+{
+    return (screen + 1f)*0.5f;
+}
 
 void main()
 {
@@ -23,11 +30,18 @@ void main()
 
     //if (deltaZ == 1) discard;
     //if (frag_in.TexCoord.y <= 0.1f && frag_in.TexCoord.y>=-0.1f) discard;
+
     //TODO 
     //float h = heightMap.Sample()
     //if(y>h) discard
 
-    FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);
+    //TODO 
+    float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
+
+    //float h = heightMap.Sample()
+    if(z>currentH) discard;
+
+    Height = z;
 }
 
 
