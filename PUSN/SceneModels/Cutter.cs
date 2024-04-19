@@ -91,38 +91,193 @@ namespace PUSN.SceneModels
             IndicesCount = indices.Length;
         }
 
+        //public void GenerateMesh()
+        //{
+        //    List<float> verts = new List<float>();
+        //    List<int> ind = new List<int>();
+        //    //List<float> norms = new List<float>();
+
+        //    float dalfa = (float)(2*Math.PI/ResX);
+
+        //    var BasicCircleVerts = new List<float>();
+        //    for(int i=0; i<=ResX;++i)
+        //    {
+        //        var angle = i*dalfa;
+        //        BasicCircleVerts.Add((float)Math.Cos(angle));
+        //        BasicCircleVerts.Add((float)Math.Sin(angle));
+        //        BasicCircleVerts.Add(0.0f);
+        //    }
+
+        //    //add lower circle and upper circle
+        //    for(int i=0; i<2;++i)
+        //    {
+        //        var h = i * Height;
+
+        //        for(int j=0; j<=ResX;j++)
+        //        {
+        //            var k = j * 3;
+        //            float x = BasicCircleVerts[k];
+        //            float y = BasicCircleVerts[k+1];
+        //            float z = BasicCircleVerts[k+2];
+
+        //            verts.Add(x*Radius);
+        //            verts.Add(h);
+        //            verts.Add(y*Radius);
+
+        //            //norms.Add(x);
+        //            //norms.Add(z);
+        //            //norms.Add(y);
+
+        //            verts.Add(x);
+        //            verts.Add(z);
+        //            verts.Add(y);
+        //        }
+        //    }
+
+        //    //verts.Count()/3 is the first next free index 
+        //    int baseCenter = verts.Count() / 6; //in next lines of code there is gonna be added new vert in the center of bottom circle
+        //    int topCenter = baseCenter + ResX+2; //after base point there is gonna be added again base circle of ResX points with new normals
+
+
+        //    for(int i=0; i<2;++i)
+        //    {
+        //        var h = i * Height;
+        //        float z = -1 + i * 2;
+
+        //        //add base center and in next step top center point
+        //        verts.Add(0.0f);
+        //        verts.Add(h);
+        //        verts.Add(0.0f);
+
+        //        //norms.Add(0.0f);
+        //        //norms.Add(z);
+        //        //norms.Add(0.0f);
+                
+        //        verts.Add(0.0f);
+        //        verts.Add(z);
+        //        verts.Add(0.0f);
+
+
+        //        for (int j = 0; j <= ResX; j++)
+        //        {
+        //            var k = j * 3;
+        //            float x = BasicCircleVerts[k];
+        //            float y = BasicCircleVerts[k + 1];
+
+        //            verts.Add(x * Radius);
+        //            verts.Add(h);
+        //            verts.Add(y * Radius);
+
+        //            //norms.Add(x);
+        //            //norms.Add(z);
+        //            //norms.Add(y);
+
+        //            verts.Add(x);
+        //            verts.Add(z);
+        //            verts.Add(y);
+        //        }
+        //    }
+
+        //    int bottom_ind = 0;
+        //    int top_ind = ResX+1;
+
+        //    //making side surface triangles
+        //    for(int i=0; i<ResX; i++)
+        //    {
+        //        //first triangle
+                
+        //        ind.Add(top_ind);
+        //        ind.Add(bottom_ind + 1);
+        //        ind.Add(bottom_ind);
+
+        //        //second triangle
+        //        ind.Add(top_ind);
+        //        ind.Add(top_ind + 1);
+        //        ind.Add(bottom_ind + 1);
+                
+
+        //        bottom_ind++;top_ind++;
+        //    }
+
+        //    int actual_bottom_ind = baseCenter + 1; //after adding center point in bottom circle there was added ResX of duplicate bottom circle points with diffrent normals (dirceted down)
+        //    //making bottom surface
+        //    for (int i = 0; i < ResX; i++)
+        //    {
+        //        if (i == ResX - 1)  //dopięcie
+        //        {
+        //            ind.Add(actual_bottom_ind);
+        //            ind.Add(baseCenter + 1);
+        //            ind.Add(baseCenter);
+        //        }
+        //        else
+        //        {
+        //            ind.Add(actual_bottom_ind + 1);
+        //            ind.Add(bottom_ind);
+        //            ind.Add(actual_bottom_ind);
+                    
+        //        }
+        //        actual_bottom_ind++;
+        //    }
+
+
+        //    int actual_upper_ind = topCenter + 1;
+        //    //making upper surface
+        //    for (int i = 0; i < ResX; i++)
+        //    {
+                
+        //        if (i == ResX - 1)  //dopięcie
+        //        {
+        //            ind.Add(topCenter);
+        //            ind.Add(topCenter + 1);
+        //            ind.Add(actual_upper_ind);
+        //        }
+        //        else
+        //        {
+        //            ind.Add(topCenter);
+        //            ind.Add(actual_upper_ind + 1);
+        //            ind.Add(actual_upper_ind);
+                    
+        //        }
+        //        actual_upper_ind++;
+        //    }
+
+        //    vertices = verts.ToArray();
+        //    indices = ind.ToArray();
+        //    //normals = norms.ToArray();
+        //}
+
         public void GenerateMesh()
         {
             List<float> verts = new List<float>();
             List<int> ind = new List<int>();
             //List<float> norms = new List<float>();
 
-            float dalfa = (float)(2*Math.PI/ResX);
+            float dalfa = (float)(2 * Math.PI / ResX);
 
             var BasicCircleVerts = new List<float>();
-            for(int i=0; i<=ResX;++i)
+            for (int i = 0; i <= ResX; ++i)
             {
-                var angle = i*dalfa;
+                var angle = i * dalfa;
                 BasicCircleVerts.Add((float)Math.Cos(angle));
                 BasicCircleVerts.Add((float)Math.Sin(angle));
                 BasicCircleVerts.Add(0.0f);
             }
 
             //add lower circle and upper circle
-            for(int i=0; i<2;++i)
+            for (int i = 0; i < 2; ++i)
             {
                 var h = i * Height;
 
-                for(int j=0; j<=ResX;j++)
+                for (int j = 0; j <= ResX; j++)
                 {
                     var k = j * 3;
                     float x = BasicCircleVerts[k];
-                    float y = BasicCircleVerts[k+1];
-                    float z = BasicCircleVerts[k+2];
+                    float y = BasicCircleVerts[k + 1];
+                    float z = BasicCircleVerts[k + 2];
 
-                    verts.Add(x*Radius);
+                    verts.Add(x * Radius);
                     verts.Add(h);
-                    verts.Add(y*Radius);
+                    verts.Add(y * Radius);
 
                     //norms.Add(x);
                     //norms.Add(z);
@@ -136,10 +291,10 @@ namespace PUSN.SceneModels
 
             //verts.Count()/3 is the first next free index 
             int baseCenter = verts.Count() / 6; //in next lines of code there is gonna be added new vert in the center of bottom circle
-            int topCenter = baseCenter + ResX+2; //after base point there is gonna be added again base circle of ResX points with new normals
+            int topCenter = baseCenter + ResX + 2; //after base point there is gonna be added again base circle of ResX points with new normals
 
 
-            for(int i=0; i<2;++i)
+            for (int i = 0; i < 2; ++i)
             {
                 var h = i * Height;
                 float z = -1 + i * 2;
@@ -152,7 +307,7 @@ namespace PUSN.SceneModels
                 //norms.Add(0.0f);
                 //norms.Add(z);
                 //norms.Add(0.0f);
-                
+
                 verts.Add(0.0f);
                 verts.Add(z);
                 verts.Add(0.0f);
@@ -179,24 +334,26 @@ namespace PUSN.SceneModels
             }
 
             int bottom_ind = 0;
-            int top_ind = ResX+1;
+            int top_ind = ResX + 1;
 
             //making side surface triangles
-            for(int i=0; i<ResX; i++)
+            for (int i = 0; i < ResX; i++)
             {
                 //first triangle
-                
-                ind.Add(top_ind);
                 ind.Add(bottom_ind + 1);
                 ind.Add(bottom_ind);
+                ind.Add(top_ind);
+
+
 
                 //second triangle
+                ind.Add(bottom_ind + 1);
                 ind.Add(top_ind);
                 ind.Add(top_ind + 1);
-                ind.Add(bottom_ind + 1);
-                
 
-                bottom_ind++;top_ind++;
+
+
+                bottom_ind++; top_ind++;
             }
 
             int actual_bottom_ind = baseCenter + 1; //after adding center point in bottom circle there was added ResX of duplicate bottom circle points with diffrent normals (dirceted down)
@@ -205,8 +362,9 @@ namespace PUSN.SceneModels
             {
                 if (i == ResX - 1)  //dopięcie
                 {
+
+                    ind.Add(baseCenter);
                     ind.Add(actual_bottom_ind);
-                    ind.Add(baseCenter + 1);
                     ind.Add(baseCenter);
                 }
                 else
@@ -214,7 +372,8 @@ namespace PUSN.SceneModels
                     ind.Add(actual_bottom_ind + 1);
                     ind.Add(bottom_ind);
                     ind.Add(actual_bottom_ind);
-                    
+
+
                 }
                 actual_bottom_ind++;
             }
@@ -224,7 +383,7 @@ namespace PUSN.SceneModels
             //making upper surface
             for (int i = 0; i < ResX; i++)
             {
-                
+
                 if (i == ResX - 1)  //dopięcie
                 {
                     ind.Add(topCenter);
@@ -236,7 +395,7 @@ namespace PUSN.SceneModels
                     ind.Add(topCenter);
                     ind.Add(actual_upper_ind + 1);
                     ind.Add(actual_upper_ind);
-                    
+
                 }
                 actual_upper_ind++;
             }
