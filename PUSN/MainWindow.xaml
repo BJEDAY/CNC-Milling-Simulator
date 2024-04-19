@@ -1,0 +1,128 @@
+﻿<Window x:Class="PUSN.MainWindow"
+        xmlns:glWpfControl="clr-namespace:OpenTK.Wpf;assembly=GLWpfControl"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PUSN"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="1200" Width="1600" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
+
+    <Window.Resources>
+        <Style x:Key="RadiusSlider" TargetType="Slider">
+            <Setter Property="Maximum" Value="10"/>
+            <Setter Property="Minimum" Value="0.01"/>
+            <Setter Property="TickPlacement" Value="BottomRight"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="0.01"/>
+        </Style>
+
+        <Style x:Key="TextboxStyle" TargetType="TextBox">
+            <Setter Property="DockPanel.Dock" Value="Right"/>
+            <Setter Property="TextAlignment" Value="Right"/>
+            <Setter Property="Width" Value="40"/>
+        </Style>
+    </Window.Resources>
+
+    <Grid Background="LightGray">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <glWpfControl:GLWpfControl 
+            Grid.Column="1"
+            Grid.Row="1"
+            x:Name="OpenTkControl" 
+            Render="OpenTkControl_OnRender"
+            MouseMove="OpenTkControl_MouseMove"
+            KeyDown="OpenTkControl_KeyDown"
+        />
+
+        <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
+            <Button x:Name="OpenFileButton" Content="Open File" Margin="10,5,10,5"/>
+            <GroupBox Header="Material Parameters" Margin="5,0,5,0">
+                <StackPanel>
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Division X"/>
+                        <TextBox Text="{Binding ElementName=DivX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="DivX" Value="0.5"/>
+                    </DockPanel>
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Division Y"/>
+                        <TextBox Text="{Binding ElementName=DivY, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="DivY" Value="0.5"/>
+                    </DockPanel>
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Size X [cm]"/>
+                        <TextBox Text="{Binding ElementName=SizeX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeX" Value="0.5"/>
+                    </DockPanel>
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Size Y [cm]"/>
+                        <TextBox Text="{Binding ElementName=SizeY, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeY" Value="0.5"/>
+                    </DockPanel>
+
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Size Z [cm]"/>
+                        <TextBox Text="{Binding ElementName=SizeZ, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeZ" Value="0.5"/>
+                    </DockPanel>
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Default Height [cm]"/>
+                        <TextBox Text="{Binding ElementName=DefHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="DefHeight" Value="0.5"/>
+                    </DockPanel>
+
+                </StackPanel>
+            </GroupBox>
+
+
+            <GroupBox Header="Simulation Parameters" Margin="5,0,5,0">
+                <StackPanel>
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Speed"/>
+                        <TextBox Text="{Binding ElementName=SimSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="SimSpeed" Value="0.5"/>
+                    </DockPanel>
+                    <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5"/>
+                    <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5"/>
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Header="Tool Parameters" Margin="5,0,5,0">
+                <StackPanel>
+                    
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Size"/>
+                        <TextBox Text="{Binding ElementName=ToolSize, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolSize" Value="0.5"/>
+                    </DockPanel>
+
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Height"/>
+                        <TextBox Text="{Binding ElementName=ToolHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="0.5"/>
+                    </DockPanel>
+
+                    <CheckBox Content="Flat" Margin="5,0,5,0"/>
+                </StackPanel>
+            </GroupBox>
+        </StackPanel>
+
+
+    </Grid>
+</Window>
