@@ -23,12 +23,15 @@ void main()
 {
     
     float check = pow(frag_in.TexCoord.x, 2) + pow(frag_in.TexCoord.y, 2);  // geometry shader draws square and then fragment shader selects pixels that makes perfect circle
-    if (1 - check<0) { discard; }
+    if (1 - check<=0) { discard; }
 
     float deltaZ = sqrt(1 - check);
+    //float deltaZ = 1 - check;
     float r = (vec4(0, 0, Radius, 0) * transform).z;
 
-    float z = frag_in.ModelCoord.z - r;// *(deltaZ-1) * Spherical;
+    float z = frag_in.ModelCoord.z + r *(deltaZ-1) + r; //* Spherical;
+
+    
 
     //for now just to load Spherical uniform it must be used in logical sense (have impact on result)
     if (Spherical == 0)
@@ -40,10 +43,10 @@ void main()
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
 
     //float h = heightMap.Sample()
-    if(z>currentH) discard;
+    if(z-currentH<0) discard;
 
     //FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);
-    Height = z;
+    Height = -z;
 }
 
 

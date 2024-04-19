@@ -101,16 +101,17 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(60, 60), new Vector2i(300, 300));
+            terrain = new Terrain(new Vector2(60, 60), new Vector2i(1200, 1200));
 
             cutter = new Cutter();
-            cutter.Translation = new Vector3(0f, 0f, 15f);
+            cutter.Translation = new Vector3(0f, 0f, 3f);
             cutter.UpdateModelMatrix();
         }
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {
-            RenderToTexture(new Vector3(-55f, 0f, -30), new Vector3(-30f, 25f, -30), 50f);
+            RenderToTexture(new Vector3(-120f, -100f, 0), new Vector3(100f, 125f, 0), 18f);
+            RenderToTexture(new Vector3(-100f, 0, 0), new Vector3(100f, 0, 0), 18f);
         }
 
         private void SetupCamera()
@@ -126,7 +127,7 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-10, -20, 50);
+            lightPos = new Vector3(-10, -20, 70);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);

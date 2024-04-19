@@ -20,10 +20,11 @@ vec2 GetTexPos(vec2 screen)
 
 void main()
 {
-    float deltaZ = sqrt(1 - pow(frag_in.TexCoord.y,2));
+    float deltaZ = sqrt(1.0 - pow(frag_in.TexCoord.y,2));
     float r = (vec4(0, 0, Radius, 0) * transform).z;
-
-    float z = frag_in.ModelCoord.z + r * (1 - deltaZ) * Spherical;
+    deltaZ= clamp(deltaZ,-1,1);
+    //float z = frag_in.ModelCoord.z + r * (1 - deltaZ) * Spherical;
+    float z  = frag_in.ModelCoord.z + r *(deltaZ-1) + r;
 
     //for now just to load Spherical uniform it must be used in logical sense (have impact on result)
     if (Spherical == 0) discard;
@@ -39,9 +40,10 @@ void main()
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
 
     //float h = heightMap.Sample()
-    if(z>currentH) discard;
+    //if(z-currentH<0) discard;
+    if(currentH==100000f) discard;
 
-    Height = z;
+    Height = -z;
 }
 
 

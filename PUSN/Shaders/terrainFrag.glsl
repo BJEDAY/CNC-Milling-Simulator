@@ -14,6 +14,13 @@ uniform sampler2D heights;
 
 //in case of this project axis z is for height
 
+vec2 GetTexPos(vec2 screen)
+{
+    return (screen + 1f)*0.5f;
+}
+
+
+
 void main()
 {
     //ambient
@@ -24,15 +31,20 @@ void main()
 
     //diffuse
     //vec3 norm = normalize(Normal);    //now it's better to calculate normal straight from heightmap 
-
-    float top = texture2D(heights, Texture + vec2(0, 0.01)).r;
-    float bottom = texture2D(heights, Texture + vec2(0, -0.01)).r;
-    float left = texture2D(heights, Texture + vec2(-0.01,0)).r;
-    float right = texture2D(heights, Texture + vec2(0.01,0)).r;
+    vec2 t = Texture + vec2(0, 0.001);
+    vec2 b = Texture + vec2(0, -0.001);
+    vec2 l = Texture + vec2(-0.001,0);
+    vec2 r = Texture + vec2(0.001,0);
+    
+    float top = texture2D(heights, t).r;
+    float bottom = texture2D(heights,b).r;
+    float left = texture2D(heights, l).r;
+    float right = texture2D(heights, r).r;
 
     
     //normal can be calculated with the gradient of surface function. In that case
     //it can be done by making derivative on horizontal and vertical axis (example: value on the right minus value on left diveded by the differrence in x space)
+    //if(t.y>1) vec3 norm = normalize(vec3((right-left)/0.02,-(bottom-top)/0.02,1));
     
     vec3 norm = normalize(vec3((right-left)/0.02,-(bottom-top)/0.02,1));
 
@@ -52,6 +64,7 @@ void main()
     //ambient test
     //vec3 res = (ambient + diffuse + specular) * objectColor;
     vec3 res = (ambient + diffuse + specular) * objectColor;
+    //vec3 res = (ambient) * objectColor;
     FragColor = vec4(res, 1.0f);
 
     //just return the color of the light (let's see if shaders work at all)
