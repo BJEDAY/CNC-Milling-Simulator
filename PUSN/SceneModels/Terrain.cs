@@ -74,7 +74,8 @@ namespace PUSN.SceneModels
             intHeights[15, 7] = 13f;
 
             //heightMap = new Texture(heights,Res.X,Res.Y);   
-            heightMap = new Texture(intHeights,Res.X,Res.Y);   
+            heightMap = new Texture(intHeights,0);   
+            //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateVAO();
             UpdateModelMatrix();
         }
@@ -204,8 +205,8 @@ namespace PUSN.SceneModels
         public void Render(Shader shader, Matrix4 View, Matrix4 Perspective,Vector3 cameraPos, Vector3 ObjectColor)
         {
             shader.Use();
-            int unit = 0;
-            heightMap.use(unit);
+            //int unit = 0;
+            heightMap.Use();
             shader.SetMatrix4("model", ModelMatrix);
             shader.SetMatrix4("view", View);
             shader.SetMatrix4("projection", Perspective);

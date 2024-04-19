@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PUSN"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1200" Width="1600" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="1300" Width="1800" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="RadiusSlider" TargetType="Slider">
