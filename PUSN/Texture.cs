@@ -68,7 +68,7 @@ namespace PUSN
 
             GL.TexImage2D(TextureTarget.Texture2D,
                 0, PixelInternalFormat.R32f,
-                data.GetLength(0), data.GetLength(1),
+                data.GetLength(0)-1, data.GetLength(1)-1,
                 0, PixelFormat.Red, PixelType.Float, data);
 
             

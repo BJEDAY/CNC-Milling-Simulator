@@ -101,7 +101,7 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(60, 60), new Vector2i(1800, 1800));
+            terrain = new Terrain(new Vector2(50, 50), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
 
             cutter = new Cutter();
             cutter.Translation = new Vector3(0f, 0f, -12f);
@@ -110,8 +110,8 @@ namespace PUSN
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {           
-            RenderToTexture(new Vector3(-100f, 0, 0), new Vector3(100f, 0, 0), 18f);
-            RenderToTexture(new Vector3(-170f, -170f, 10.5f), new Vector3(120f, 120f, 5f), 18f);
+            RenderToTexture(new Vector3(-100f, 0, 12), new Vector3(100f, 0, 12), 18f);
+            RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
         }
 
         private void SetupCamera()

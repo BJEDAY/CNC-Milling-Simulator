@@ -50,7 +50,8 @@ namespace PUSN.SceneModels
             intHeights = new float[Res.X+1,Res.Y+1];
 
             BlockSize = new Vector3(300, 300, 50);   //x,y,z
-            Size = new Vector2(40, 40);
+            //Size = new Vector2(300, 300);
+            Size = s;
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, BlockSize);
 

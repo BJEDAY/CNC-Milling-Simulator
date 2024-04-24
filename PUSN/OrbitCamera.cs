@@ -56,7 +56,7 @@ namespace PUSN
         public void UpdateProj(float aspect)
         {
             this.aspect = aspect;
-            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60), aspect, 0.01f, 200.0f);
+            projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60), aspect, 0.01f, 800.0f);
         }
     }
 }
