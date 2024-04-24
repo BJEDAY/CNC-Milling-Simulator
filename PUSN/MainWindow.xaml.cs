@@ -42,7 +42,7 @@ namespace PUSN
         MillingTool tool;
         Terrain terrain;
         Cutter cutter;
-
+        float currentH = 0;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
@@ -101,17 +101,17 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(60, 60), new Vector2i(1200, 1200));
+            terrain = new Terrain(new Vector2(60, 60), new Vector2i(1800, 1800));
 
             cutter = new Cutter();
-            cutter.Translation = new Vector3(0f, 0f, 3f);
+            cutter.Translation = new Vector3(0f, 0f, -12f);
             cutter.UpdateModelMatrix();
         }
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
-        {
-            RenderToTexture(new Vector3(-120f, -100f, 0), new Vector3(100f, 125f, 0), 18f);
+        {           
             RenderToTexture(new Vector3(-100f, 0, 0), new Vector3(100f, 0, 0), 18f);
+            RenderToTexture(new Vector3(-170f, -170f, 10.5f), new Vector3(120f, 120f, 5f), 18f);
         }
 
         private void SetupCamera()
@@ -127,7 +127,7 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-10, -20, 70);
+            lightPos = new Vector3(10, 20, 70);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);

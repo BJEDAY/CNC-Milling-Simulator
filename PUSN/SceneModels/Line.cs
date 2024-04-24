@@ -43,7 +43,6 @@ namespace PUSN.SceneModels
             shader.SetInt("Spherical", 1); //1 - spherical shaped tool end
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Lines, 2, DrawElementsType.UnsignedInt, 0);
-            
         }
         
         public void Update(Vector3 from, Vector3 to, float r)
@@ -82,7 +81,7 @@ namespace PUSN.SceneModels
         public void UpdateModelMatrix(float sX, float sY, float sZ)
         {
             ModelMatrix = Matrix4.Identity;
-            ModelMatrix = ModelMatrix * Matrix4.CreateScale(1/sX, 1/sY, 6/sZ);
+            ModelMatrix = ModelMatrix * Matrix4.CreateScale(1/sX, 1/sY, 1/2*sZ);
         }
     }
 }

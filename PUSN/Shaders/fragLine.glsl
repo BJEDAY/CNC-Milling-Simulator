@@ -1,4 +1,4 @@
-﻿#version 420 core
+﻿#version 400 core
 //out vec4 FragColor;
 out float Height;
 
@@ -6,6 +6,7 @@ in FInput
 {
     vec2 TexCoord;
     vec3 ModelCoord;
+    float GlobalZ;
 }frag_in;
 
 uniform float Radius;
@@ -15,35 +16,29 @@ uniform sampler2D heights;
 
 vec2 GetTexPos(vec2 screen)
 {
-    return (screen + 1f)*0.5f;
+    return (screen * vec2(1,-1) + 1f)*0.5f;
 }
 
 void main()
 {
     float deltaZ = sqrt(1.0 - pow(frag_in.TexCoord.y,2));
-    float r = (vec4(0, 0, Radius, 0) * transform).z;
-    deltaZ= clamp(deltaZ,-1,1);
-    //float z = frag_in.ModelCoord.z + r * (1 - deltaZ) * Spherical;
-    float z  = frag_in.ModelCoord.z + r *(deltaZ-1) + r;
+    //float r = (vec4(0, 0, Radius, 0) * transform).z;
+    float r = Radius/6;
+    float z  = frag_in.GlobalZ - r *(deltaZ-1) * Spherical;// - r;
 
-    //for now just to load Spherical uniform it must be used in logical sense (have impact on result)
-    if (Spherical == 0) discard;
-
-    //if (deltaZ == 1) discard;
-    //if (frag_in.TexCoord.y <= 0.1f && frag_in.TexCoord.y>=-0.1f) discard;
-
-    //TODO 
-    //float h = heightMap.Sample()
-    //if(y>h) discard
-
-    //TODO 
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
 
     //float h = heightMap.Sample()
-    //if(z-currentH<0) discard;
-    if(currentH==100000f) discard;
-
-    Height = -z;
+    //currentH == 10000000f 
+    if(z-currentH>0 || z>50)
+    {
+        //discard;
+        Height = currentH;
+    }
+    else
+    {
+        Height = z;
+    }
 }
 
 

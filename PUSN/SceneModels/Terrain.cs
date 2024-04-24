@@ -67,7 +67,7 @@ namespace PUSN.SceneModels
             {
                 for (int j = 0; j <= Res.Y; j++)
                 {
-                    intHeights[i, j] = 0f;
+                    intHeights[i, j] = 20f;
                 }
             }
 
@@ -87,6 +87,7 @@ namespace PUSN.SceneModels
 
             //heightMap = new Texture(heights,Res.X,Res.Y);   
             heightMap = new Texture(intHeights,0);
+            tool.Sampler = heightMap.sampler;
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateFramebuffer();
             GenerateVAO();
@@ -112,7 +113,7 @@ namespace PUSN.SceneModels
         {
             tool.Update(start,end,r);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
-            GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
+            //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Viewport(0, 0, Res.X, Res.Y);
             GL.BindTexture(TextureTarget.Texture2D, heightMap.Handle);
             tool.Draw(geo, line);
