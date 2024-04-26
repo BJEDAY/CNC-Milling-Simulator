@@ -22,15 +22,16 @@ vec2 GetTexPos(vec2 screen)
 void main()
 {
     float deltaZ = sqrt(1.0 - pow(frag_in.TexCoord.y,2));
-    //float r = (vec4(0, 0, Radius, 0) * transform).z;
-    float r = Radius/6;
-    float z  = frag_in.GlobalZ - r *(deltaZ-1) * Spherical;// - r;
+    float r = (vec4(0, 0, Radius, 0) * transform).z * 2;
+    //float r = Radius/6;
+    //float z  = frag_in.GlobalZ - r *(deltaZ-1) * Spherical;// - r;
+    float z  = frag_in.ModelCoord.z*2 - r *(deltaZ-1) * Spherical;
 
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
 
     //float h = heightMap.Sample()
-    //currentH == 10000000f 
-    if(z-currentH>0 || z>50)
+    // if(currentH == 10000000f)
+    if(z-currentH>0)
     {
         //discard;
         Height = currentH;

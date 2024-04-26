@@ -87,7 +87,7 @@ namespace PUSN.SceneModels
         public void UpdateModelMatrix(float sX, float sY, float sZ)
         { 
             ModelMatrix = Matrix4.Identity;
-            ModelMatrix = ModelMatrix * Matrix4.CreateScale(1 / sX, 1 / sY, 1 / 2*sZ);
+            ModelMatrix = ModelMatrix * Matrix4.CreateScale(1 / sX, 1 / sY, 1 / (2*sZ));    //2 * sZ bo czasami frez może być poniżej NDC a jego okolice wypłyną kostkę (ale trzeba pamiętac, że żeby uzyskać prawidłowe Z trzeba będzie mnożyć 2)
         }
     }
 }

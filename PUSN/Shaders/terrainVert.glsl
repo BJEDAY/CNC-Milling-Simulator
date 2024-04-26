@@ -6,6 +6,7 @@ layout(location = 2) in vec2 texCoord;
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 display;
 uniform sampler2D heights;
 
 out vec3 FragPos;
@@ -21,6 +22,7 @@ void main()
     Texture = texCoord;
 
     float h = texture2D(heights, texCoord).r;
+    h = (vec4(0,0,h,1.0) * display).z;
     //if (h < 1) aPosition = vec3(0, 0, 0);
     //if (h = 0) FragPos.Z = 0.0f;
     //FragPos.z = h;

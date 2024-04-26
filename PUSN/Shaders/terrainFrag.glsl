@@ -46,7 +46,7 @@ void main()
     //it can be done by making derivative on horizontal and vertical axis (example: value on the right minus value on left diveded by the differrence in x space)
     //if(t.y>1) vec3 norm = normalize(vec3((right-left)/0.02,-(bottom-top)/0.02,1));
     
-    vec3 norm = normalize(vec3((right-left)/0.02,-(bottom-top)/0.02,1));
+    vec3 norm = normalize(vec3((right-left)/0.002,-(bottom-top)/0.002,1));
 
     //vec3 norm = normalize(vec3(0, 0, 1));
     

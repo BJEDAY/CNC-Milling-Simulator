@@ -18,6 +18,7 @@ namespace PUSN.SceneModels
         Vector2i Res { get; set; }
 
         Matrix4 ModelMatrix;
+        Matrix4 DisplayMatrix;
         public int VertexArrayObject { get; set; }
         public int VertexBufferObject { get; set; }
         public int ElementBufferObject { get; set; }
@@ -54,7 +55,7 @@ namespace PUSN.SceneModels
             Size = s;
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, BlockSize);
-
+            DisplayMatrix = Matrix4.CreateScale(s.X, s.Y, 50);
 
             //for (int i=0;i<Res.X;i++)
             //{
@@ -68,7 +69,7 @@ namespace PUSN.SceneModels
             {
                 for (int j = 0; j <= Res.Y; j++)
                 {
-                    intHeights[i, j] = 20f;
+                    intHeights[i, j] = 1f;
                 }
             }
 
@@ -248,6 +249,7 @@ namespace PUSN.SceneModels
             //int unit = 0;
             heightMap.Use();
             shader.SetMatrix4("model", ModelMatrix);
+            shader.SetMatrix4("display", DisplayMatrix);
             shader.SetMatrix4("view", View);
             shader.SetMatrix4("projection", Perspective);
             shader.SetVec3("objectColor", ObjectColor);  //uniform vec3 objectColor;
