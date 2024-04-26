@@ -82,6 +82,15 @@ namespace PUSN
             //GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
 
+        public void UpdateTexture(float[,] data)
+        {
+            Use();
+            GL.TexImage2D(TextureTarget.Texture2D,
+                0, PixelInternalFormat.R32f,
+                data.GetLength(0) - 1, data.GetLength(1) - 1,
+                0, PixelFormat.Red, PixelType.Float, data);
+        }
+
         public Texture(Vector3[,] data, int unit)
         {
             Handle = GL.GenTexture();

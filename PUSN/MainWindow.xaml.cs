@@ -109,9 +109,26 @@ namespace PUSN
         }
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
-        {           
-            RenderToTexture(new Vector3(-70f, 50, -30), new Vector3(140f, 0, 30), 30f);
+        {
+            float sX=0, sY=0, sZ=0;
+            if (!float.TryParse(StartX.Text, out sX)) { Console.WriteLine("Wrong start X!"); }
+            if (!float.TryParse(StartY.Text, out sY)) { Console.WriteLine("Wrong start Y!"); }
+            if (!float.TryParse(StartZ.Text, out sZ)) { Console.WriteLine("Wrong start Z!"); }                                 
+            Vector3 start = new Vector3(sX,sY,sZ);
+
+            float eX = 0, eY = 0, eZ = 0;
+            if (!float.TryParse(EndX.Text, out eX)) { Console.WriteLine("Wrong start X!"); }
+            if (!float.TryParse(EndY.Text, out eY)) { Console.WriteLine("Wrong start Y!"); }
+            if (!float.TryParse(EndZ.Text, out eZ)) { Console.WriteLine("Wrong start Z!"); }
+            Vector3 end = new Vector3(eX, eY, eZ);
+
+            RenderToTexture(start, end, 30f);
             //RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
+        }
+
+        private void ResetMap_Click(object sender, RoutedEventArgs e)
+        {
+            terrain.ResetTexture();
         }
 
         private void SetupCamera()

@@ -33,6 +33,12 @@ namespace PUSN.SceneModels
 
         public Texture heightMap;
 
+        // TODO: create depth and temp texure
+        // Framebuffer gonnna use depth to determinate if current pixel z is okey (so there is no need inside shaders)
+        // All mill data are gonna be rendered to temp texture so for validation could be used info from heigtmap tex
+        // Now when rendering at the same time to heightmap and reading values from it it can create some problems
+        // It could be from that the heightmap is updated every frame, so when in one frame two operation on heightmap are performed heightmap don't have info about last line changes or dot
+
         MillingTool tool;
 
         int FrameBufferHandle;
@@ -96,6 +102,10 @@ namespace PUSN.SceneModels
             UpdateModelMatrix();
         }
 
+        public void ResetTexture()
+        {
+            heightMap.UpdateTexture(intHeights);
+        }
         private void GenerateFramebuffer()
         {
             FrameBufferHandle = GL.GenFramebuffer();
