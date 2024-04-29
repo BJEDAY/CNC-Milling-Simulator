@@ -17,7 +17,7 @@ namespace PUSN
     public class Texture : IDisposable
     {
         public int Handle;
-        TextureUnit Unit;
+        public TextureUnit Unit;
 
         public int sampler { get; set; }
 

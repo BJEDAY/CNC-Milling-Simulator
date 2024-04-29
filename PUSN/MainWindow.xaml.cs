@@ -34,7 +34,7 @@ namespace PUSN
     public partial class MainWindow : Window
     {
         OrbitCamera camera;
-        Shader shader, phongShader, terrainShader;
+        Shader shader, phongShader, terrainShader, texShader;
         ShaderGeometry thickLineShader, dotShader;
         Vector3 block_size, lightPos, lightColor, terrainColor, cutterColor;
         ViewPerspectiveSettings perspectiveSettings;
@@ -65,6 +65,10 @@ namespace PUSN
         //terrain heightmap sampling shader
         public const string ShaderVertLocTerrain = "../../../Shaders/terrainVert.glsl";
         public const string ShaderFragLocTerrain = "../../../Shaders/terrainFrag.glsl";
+
+        //texture viewer shader (gonna be used to fast render all data from tempMap to heightMap)
+        public const string ShaderVertLocViewerTex = "../../../Shaders/TexViewerVert.glsl";
+        public const string ShaderFragLocViewerTex = "../../../Shaders/TexViewerFrag.glsl";
 
         public MainWindow()
         {
@@ -117,12 +121,14 @@ namespace PUSN
             Vector3 start = new Vector3(sX,sY,sZ);
 
             float eX = 0, eY = 0, eZ = 0;
-            if (!float.TryParse(EndX.Text, out eX)) { Console.WriteLine("Wrong start X!"); }
-            if (!float.TryParse(EndY.Text, out eY)) { Console.WriteLine("Wrong start Y!"); }
-            if (!float.TryParse(EndZ.Text, out eZ)) { Console.WriteLine("Wrong start Z!"); }
+            if (!float.TryParse(EndX.Text, out eX)) { Console.WriteLine("Wrong end X!"); }
+            if (!float.TryParse(EndY.Text, out eY)) { Console.WriteLine("Wrong end Y!"); }
+            if (!float.TryParse(EndZ.Text, out eZ)) { Console.WriteLine("Wrong end Z!"); }
             Vector3 end = new Vector3(eX, eY, eZ);
 
-            RenderToTexture(start, end, 30f);
+            float r = 10f;
+            if (!float.TryParse(Radius.Text, out r)) { Console.WriteLine("Wrong radius!"); }
+            RenderToTexture(start, end, r);
             //RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
         }
 
@@ -158,6 +164,7 @@ namespace PUSN
             dotShader = new ShaderGeometry(ShaderVertLocDot, ShaderFragLocDot, ShaderGeoLocDot);
             phongShader = new Shader(ShaderVertLocPhong, ShaderFragLocPhong);
             terrainShader = new Shader(ShaderVertLocTerrain, ShaderFragLocTerrain);
+            texShader = new Shader(ShaderVertLocViewerTex, ShaderFragLocViewerTex);
 
             //phong shader light position and color are setup once and used globally for diffrent objects.
             //Althought viewPos is changed for all objects in every frame and objectColor every frame for every object using phong.
@@ -180,6 +187,9 @@ namespace PUSN
             cutter.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
             terrain.Render(terrainShader, camera.viewMatrix, camera.projectionMatrix,camera.pos,terrainColor);
 
+            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth/4, (int)OpenTkControl.ActualHeight/4);
+            terrain.DrawTextureViewer(texShader);
+            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);
         }

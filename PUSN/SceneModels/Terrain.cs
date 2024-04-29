@@ -32,6 +32,8 @@ namespace PUSN.SceneModels
         float[] vertices; int[] indices; float[] normals;
 
         public Texture heightMap;
+        private Texture tempMap;
+        public TextureViewer TexViewer;
 
         // TODO: create depth and temp texure
         // Framebuffer gonnna use depth to determinate if current pixel z is okey (so there is no need inside shaders)
@@ -95,7 +97,9 @@ namespace PUSN.SceneModels
 
             //heightMap = new Texture(heights,Res.X,Res.Y);   
             heightMap = new Texture(intHeights,0);
+            tempMap = new Texture(intHeights,0);
             tool.Sampler = heightMap.sampler;
+            TexViewer = new TextureViewer();
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateFramebuffer();
             GenerateVAO();
@@ -105,12 +109,14 @@ namespace PUSN.SceneModels
         public void ResetTexture()
         {
             heightMap.UpdateTexture(intHeights);
+            tempMap.UpdateTexture(intHeights);
         }
         private void GenerateFramebuffer()
         {
             FrameBufferHandle = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.FramebufferExt, FrameBufferHandle);
             GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,heightMap.Handle,0);
+            //GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,tempMap.Handle,0);
 
             // error check
             FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.FramebufferExt);
@@ -232,6 +238,10 @@ namespace PUSN.SceneModels
             IndicesCount = indices.Length;
         }
 
+        public void DrawTextureViewer(Shader shader)
+        {
+            TexViewer.Draw(shader, heightMap);
+        }
         public void UpdateVAO()
         {
             GenerateVerticesNormals();

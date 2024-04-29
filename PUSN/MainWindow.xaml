@@ -146,6 +146,10 @@
                         <TextBox Name="EndY" Style="{StaticResource TextboxMillingStyle}"/>
                         <TextBox Name="EndZ" Style="{StaticResource TextboxMillingStyle}"/>
                     </DockPanel>
+                    <DockPanel VerticalAlignment="Center" Margin="5" HorizontalAlignment="Center">
+                        <TextBlock Text="Radius"/>
+                        <TextBox Name="Radius" Style="{StaticResource TextboxMillingStyle}" Width="95"/>
+                    </DockPanel>
 
                     <Button x:Name="ResetMap" Width="100" Height="20" Content="Reset surface" Click="ResetMap_Click"/>
                 </StackPanel>
