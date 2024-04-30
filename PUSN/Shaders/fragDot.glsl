@@ -47,7 +47,7 @@ void main()
         }
         
         Height = z;
-        gl_FragDepth = 1-z;     
+        gl_FragDepth = z;     
     }
 }
 

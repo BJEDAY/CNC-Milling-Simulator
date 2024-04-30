@@ -102,7 +102,7 @@ namespace PUSN.SceneModels
             //heightMap = new Texture(heights,Res.X,Res.Y);   
             heightMap = new Texture(intHeights,0);
             tempMap = new Texture(intHeights,0);
-            depthMap = new Texture(Res,2);
+            depthMap = new Texture(Res,0);
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
@@ -113,20 +113,14 @@ namespace PUSN.SceneModels
 
         public void ResetTexture()
         {
-            //heightMap.UpdateTexture(intHeights);
-            //tempMap.UpdateTexture(intHeights);
-            //depthMap.UpdateDepth(Res);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
             GL.ClearColor(1, 0, 0, 0);
-            //GL.DepthFunc(DepthFunction.Greater);
-            GL.DepthMask(true);
-            //GL.Enable(EnableCap.DepthTest);
+            //GL.DepthMask(true);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle2);
             GL.Clear(ClearBufferMask.ColorBufferBit);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
-            //GL.DepthFunc(DepthFunction.Less);
         }
         private void GenerateFramebuffer()
         {
@@ -136,10 +130,8 @@ namespace PUSN.SceneModels
             GL.BindFramebuffer(FramebufferTarget.FramebufferExt, FrameBufferHandle);
             //GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,heightMap.Handle,0);
             GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,tempMap.Handle,0);
-
-
-
             GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt, FramebufferAttachment.DepthAttachmentExt, TextureTarget.Texture2D, depthMap.Handle, 0);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
 
             // error check
             FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.FramebufferExt);
@@ -172,7 +164,7 @@ namespace PUSN.SceneModels
             //GL.BindTexture(TextureTarget.Texture2D, depthMap.Handle);
             //GL.Enable(EnableCap.DepthTest);
             //GL.Clear(ClearBufferMask.DepthBufferBit);
-            GL.DepthFunc(DepthFunction.Greater);
+            GL.DepthFunc(DepthFunction.Less);
             //GL.DepthFunc(DepthFunction.Always);
             tool.Draw(geo, line);
             GL.DepthFunc(DepthFunction.Less);
@@ -286,9 +278,9 @@ namespace PUSN.SceneModels
 
         public void DrawTextureViewer(Shader shader)
         {
-            TexViewer.Draw(shader, tempMap);
+            //TexViewer.Draw(shader, tempMap);
             //TexViewer.Draw(shader, heightMap);
-            //TexViewer.Draw(shader, depthMap);
+            TexViewer.Draw(shader, depthMap);
         }
         public void UpdateVAO()
         {

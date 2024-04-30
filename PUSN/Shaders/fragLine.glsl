@@ -30,7 +30,7 @@ void main()
     // coś tutaj musi być żeby nie wywaliło błedu że heights nie używane
     if(currentH == 100000) discard;
 
-    gl_FragDepth = 1-z; // wartości w teksturze głebokości są ustawione od 0, a potem im głębiej frez schodzi tym bardziej rosną (czyli jak ma dotrzeć do końca to będize 1)
+    gl_FragDepth = z; 
 
     Height = z;
     
