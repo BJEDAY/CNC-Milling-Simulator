@@ -1,6 +1,7 @@
 ﻿#version 400 core
 //out vec4 FragColor;
 out float Height;
+//out vec4 res;
 
 in FInput
 {
@@ -20,7 +21,7 @@ vec2 GetTexPos(vec2 screen)
 }
 
 void main()
-{
+{    
     float deltaZ = sqrt(1.0 - pow(frag_in.TexCoord.y,2));
     float r = (vec4(0, 0, Radius, 0) * transform).z * 2;
     //float r = Radius/6;
@@ -34,10 +35,15 @@ void main()
     if(z-currentH>0)
     {
         //discard;
+        gl_FragDepth = 1-currentH;
+        //res = vec4(currentH,0,currentH,1);
         Height = currentH;
     }
     else
     {
+        //Height = z;
+        gl_FragDepth = 1-z;
+        //res = vec4(z,0,z,1);
         Height = z;
     }
 }

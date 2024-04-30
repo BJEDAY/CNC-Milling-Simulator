@@ -1,6 +1,7 @@
 ﻿#version 400 core
 //out vec4 FragColor;
 out float Height;
+//out vec4 res;
 
 in FInput
 {
@@ -31,9 +32,12 @@ void main()
     //Spherical == 1
     if (1 - check<0) 
     { // If it's not affected by current position of tool leave current h
-        //discard;
+        discard;
         //Height = 30;
-        Height = currentH;
+        //gl_FragDepth = currentH;
+        //Height = currentH;
+        //res = vec4(currentH,0,currentH,1);
+        //gl_FragDepth = 1-currentH;
         //Height = frag_in.GlobalZ;
         //Height = 5;
     }
@@ -55,13 +59,19 @@ void main()
         if(z-currentH>=0)
         {
             //discard;
+            //gl_FragDepth = currentH;
             Height = currentH;
+            //res = vec4(currentH,0,currentH,1);
+            gl_FragDepth = 1-currentH;
         }
         else
         {
             //FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);
             //Height = z*0.0001f + 0.5f;
+            //gl_FragDepth = z;
             Height = z;
+            //res = vec4(z,0,z,1);
+            gl_FragDepth = 1-z;
         } 
     }
 }

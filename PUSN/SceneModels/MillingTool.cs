@@ -36,14 +36,14 @@ namespace PUSN.SceneModels
 
         public void Draw(ShaderGeometry dotShader, ShaderGeometry lineShader)
         {
+            lineShader.Use();
+            lineShader.SetInt("heights", Sampler);
+            line.Draw(lineShader);
+
             dotShader.Use();
             dotShader.SetInt("heights", Sampler);
             s.Draw(dotShader);
             e.Draw(dotShader);
-
-            lineShader.Use();
-            lineShader.SetInt("heights", Sampler);
-            line.Draw(lineShader);
         }
 
         public void Update(Vector3 start, Vector3 end, float r)

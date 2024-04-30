@@ -32,8 +32,12 @@ namespace PUSN.SceneModels
         float[] vertices; int[] indices; float[] normals;
 
         public Texture heightMap;
-        private Texture tempMap;
+        private Texture tempMap;    
+        private Texture depthMap;
         public TextureViewer TexViewer;
+
+        // Trzeba to zassać z głownego okna
+        public Shader TexShader;
 
         // TODO: create depth and temp texure
         // Framebuffer gonnna use depth to determinate if current pixel z is okey (so there is no need inside shaders)
@@ -43,7 +47,7 @@ namespace PUSN.SceneModels
 
         MillingTool tool;
 
-        int FrameBufferHandle;
+        int FrameBufferHandle, FrameBufferHandle2;  // jedna robi render do Temp z uwzględnieniem Depth, a druga robi render do Height 
 
         float[] heights;
         float[,] intHeights;
@@ -98,6 +102,7 @@ namespace PUSN.SceneModels
             //heightMap = new Texture(heights,Res.X,Res.Y);   
             heightMap = new Texture(intHeights,0);
             tempMap = new Texture(intHeights,0);
+            depthMap = new Texture(Res,2);
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
@@ -113,10 +118,16 @@ namespace PUSN.SceneModels
         }
         private void GenerateFramebuffer()
         {
+            // To jest frameBuffer który przeniesie milling product z GPU do tekstury temp (uwzględniając Depth)
+            // TODO: Wyjeb liczenie 'z' w shaderze i zrób tutaj Depthbuffer i ustaw odpowiednio DepthFunc(DepthFunction.Less);
             FrameBufferHandle = GL.GenFramebuffer();
             GL.BindFramebuffer(FramebufferTarget.FramebufferExt, FrameBufferHandle);
-            GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,heightMap.Handle,0);
-            //GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,tempMap.Handle,0);
+            //GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,heightMap.Handle,0);
+            GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt,FramebufferAttachment.ColorAttachment0Ext,TextureTarget.Texture2D,tempMap.Handle,0);
+
+
+
+            GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt, FramebufferAttachment.DepthAttachmentExt, TextureTarget.Texture2D, depthMap.Handle, 0);
 
             // error check
             FramebufferErrorCode status = GL.CheckFramebufferStatus(FramebufferTarget.FramebufferExt);
@@ -125,16 +136,39 @@ namespace PUSN.SceneModels
             {
                 Console.WriteLine("Error creating framebuffer: {0}", status);
             }
+
+            FrameBufferHandle2 = GL.GenFramebuffer();
+            GL.BindFramebuffer(FramebufferTarget.FramebufferExt, FrameBufferHandle2);
+            GL.FramebufferTexture2D(FramebufferTarget.FramebufferExt, FramebufferAttachment.ColorAttachment0Ext, TextureTarget.Texture2D, heightMap.Handle, 0);
+
+            // error check
+            status = GL.CheckFramebufferStatus(FramebufferTarget.FramebufferExt);
+            if (status != FramebufferErrorCode.FramebufferComplete &&
+                status != FramebufferErrorCode.FramebufferCompleteExt)
+            {
+                Console.WriteLine("Error creating framebuffer: {0}", status);
+            }
         }
 
         public void RenderToHeight(Vector3 start, Vector3 end,float r, ShaderGeometry geo, ShaderGeometry line)
         {
+            // Step 1: Mill on GPU and render it to Temp texture
             tool.Update(start,end,r);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
             //GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
             GL.Viewport(0, 0, Res.X, Res.Y);
-            GL.BindTexture(TextureTarget.Texture2D, heightMap.Handle);
+            //GL.BindTexture(TextureTarget.Texture2D, depthMap.Handle);
+            //GL.Enable(EnableCap.DepthTest);
+            //GL.Clear(ClearBufferMask.DepthBufferBit);
+            //GL.DepthFunc(DepthFunction.Greater);
+            GL.DepthFunc(DepthFunction.Always);
             tool.Draw(geo, line);
+            GL.DepthFunc(DepthFunction.Less);
+            // Step 2: Render Temp texture to Height texture
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle2);
+            TexViewer.Draw(TexShader, tempMap);     //FrameBufferHandle2 jest ustawiony na render do HeightMapy, ale używa TempMapy do wzięcia danych
+
+
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
         public void UpdateParameters(Vector2 s, Vector2i r)
@@ -240,7 +274,9 @@ namespace PUSN.SceneModels
 
         public void DrawTextureViewer(Shader shader)
         {
-            TexViewer.Draw(shader, heightMap);
+            TexViewer.Draw(shader, tempMap);
+            //TexViewer.Draw(shader, heightMap);
+            //TexViewer.Draw(shader, depthMap);
         }
         public void UpdateVAO()
         {

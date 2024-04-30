@@ -11,6 +11,7 @@ using OpenTK.Compute.OpenCL;
 using System.Drawing;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using OpenTK.Mathematics;
+using System.Windows.Markup;
 
 namespace PUSN
 {
@@ -82,6 +83,27 @@ namespace PUSN
             //GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
 
+        public Texture(Vector2 Res, int unit)       // this is Depthbuffer texture constructor
+        {
+            Handle = GL.GenTexture();
+            sampler = unit;
+            Unit = TextureUnit.Texture0 + unit;
+            Use();
+
+            GL.TexImage2D(TextureTarget.Texture2D,
+                0, (PixelInternalFormat)All.DepthComponent32,
+            (int)Res.X, (int)Res.Y,
+                0, PixelFormat.DepthComponent, PixelType.UnsignedInt, IntPtr.Zero);
+
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMagFilter.Linear);
+            //GL.SamplerParameter(sampler, SamplerParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+        }
+
         public void UpdateTexture(float[,] data)
         {
             Use();
@@ -134,6 +156,15 @@ namespace PUSN
             rand.NextBytes(res);
             return res;
         }
+
+        private byte[] GenerateOneBytes(int sizeX, int sizeY)
+        {
+            var rand = new Random();
+            var res = new byte[4 * (int)(sizeX * sizeY)];
+            rand.NextBytes(res);
+            return res;
+        }
+
 
         public void UpdateTexture(Vector3[,] data)
         {

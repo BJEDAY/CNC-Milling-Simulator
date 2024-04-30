@@ -165,6 +165,7 @@ namespace PUSN
             phongShader = new Shader(ShaderVertLocPhong, ShaderFragLocPhong);
             terrainShader = new Shader(ShaderVertLocTerrain, ShaderFragLocTerrain);
             texShader = new Shader(ShaderVertLocViewerTex, ShaderFragLocViewerTex);
+            terrain.TexShader =texShader;
 
             //phong shader light position and color are setup once and used globally for diffrent objects.
             //Althought viewPos is changed for all objects in every frame and objectColor every frame for every object using phong.
