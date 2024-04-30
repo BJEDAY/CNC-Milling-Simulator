@@ -113,8 +113,20 @@ namespace PUSN.SceneModels
 
         public void ResetTexture()
         {
-            heightMap.UpdateTexture(intHeights);
-            tempMap.UpdateTexture(intHeights);
+            //heightMap.UpdateTexture(intHeights);
+            //tempMap.UpdateTexture(intHeights);
+            //depthMap.UpdateDepth(Res);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
+            GL.ClearColor(1, 0, 0, 0);
+            //GL.DepthFunc(DepthFunction.Greater);
+            GL.DepthMask(true);
+            //GL.Enable(EnableCap.DepthTest);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.Clear(ClearBufferMask.DepthBufferBit);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle2);
+            GL.Clear(ClearBufferMask.ColorBufferBit);
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            //GL.DepthFunc(DepthFunction.Less);
         }
         private void GenerateFramebuffer()
         {
@@ -160,8 +172,8 @@ namespace PUSN.SceneModels
             //GL.BindTexture(TextureTarget.Texture2D, depthMap.Handle);
             //GL.Enable(EnableCap.DepthTest);
             //GL.Clear(ClearBufferMask.DepthBufferBit);
-            //GL.DepthFunc(DepthFunction.Greater);
-            GL.DepthFunc(DepthFunction.Always);
+            GL.DepthFunc(DepthFunction.Greater);
+            //GL.DepthFunc(DepthFunction.Always);
             tool.Draw(geo, line);
             GL.DepthFunc(DepthFunction.Less);
             // Step 2: Render Temp texture to Height texture

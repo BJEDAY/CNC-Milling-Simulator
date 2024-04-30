@@ -27,54 +27,80 @@ void main()
     float check = pow(frag_in.TexCoord.x, 2) + pow(frag_in.TexCoord.y, 2);  // geometry shader draws square and then fragment shader selects pixels that makes perfect circle
 
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelXYZ.xy)).r;
-    //float currentH = texture2D(heights,vec2(0.1f,0.1f)).x;
-    //1 - check<=0
-    //Spherical == 1
+
     if (1 - check<0) 
     { // If it's not affected by current position of tool leave current h
         discard;
-        //Height = 30;
-        //gl_FragDepth = currentH;
-        //Height = currentH;
-        //res = vec4(currentH,0,currentH,1);
-        //gl_FragDepth = 1-currentH;
-        //Height = frag_in.GlobalZ;
-        //Height = 5;
     }
     else
     {
         float deltaZ = sqrt(1 - check);
 
         float r = (vec4(0, 0, Radius, 0) * transform).z*2;
-        //float r = Radius/50;
-        //float r = Radius;
-        //-frag_in.ModelCoord.z
-        //float z =  frag_in.GlobalZ-r *(deltaZ-1)* Spherical;// - r ;
-        float z =  frag_in.ModelXYZ.z*2 *Spherical + (1-deltaZ)*r;  //-r *(deltaZ-1)* Spherical*0000.1f;// - r ;
+
+        float z =  frag_in.ModelXYZ.z*2 *Spherical + (1-deltaZ)*r;  
            
-        // Discard prawdopodobnie zwraca h=0, a to źle
-        //if(z-currentH>0 || z>50)
-        //if(currentH<-100000)
-        
-        if(z-currentH>=0)
+        // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
+        if(currentH == 10000)
         {
-            //discard;
-            //gl_FragDepth = currentH;
-            Height = currentH;
-            //res = vec4(currentH,0,currentH,1);
-            gl_FragDepth = 1-currentH;
+            discard;
         }
-        else
-        {
-            //FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);
-            //Height = z*0.0001f + 0.5f;
-            //gl_FragDepth = z;
-            Height = z;
-            //res = vec4(z,0,z,1);
-            gl_FragDepth = 1-z;
-        } 
+        
+        Height = z;
+        gl_FragDepth = 1-z;     
     }
 }
 
 
 
+// OLD
+//float check = pow(frag_in.TexCoord.x, 2) + pow(frag_in.TexCoord.y, 2);  // geometry shader draws square and then fragment shader selects pixels that makes perfect circle
+//
+//    float currentH = texture2D(heights,GetTexPos(frag_in.ModelXYZ.xy)).r;
+//    //float currentH = texture2D(heights,vec2(0.1f,0.1f)).x;
+//    //1 - check<=0
+//    //Spherical == 1
+//    if (1 - check<0) 
+//    { // If it's not affected by current position of tool leave current h
+//        discard;
+//        //Height = 30;
+//        //gl_FragDepth = currentH;
+//        //Height = currentH;
+//        //res = vec4(currentH,0,currentH,1);
+//        //gl_FragDepth = 1-currentH;
+//        //Height = frag_in.GlobalZ;
+//        //Height = 5;
+//    }
+//    else
+//    {
+//        float deltaZ = sqrt(1 - check);
+//
+//        float r = (vec4(0, 0, Radius, 0) * transform).z*2;
+//        //float r = Radius/50;
+//        //float r = Radius;
+//        //-frag_in.ModelCoord.z
+//        //float z =  frag_in.GlobalZ-r *(deltaZ-1)* Spherical;// - r ;
+//        float z =  frag_in.ModelXYZ.z*2 *Spherical + (1-deltaZ)*r;  //-r *(deltaZ-1)* Spherical*0000.1f;// - r ;
+//           
+//        // Discard prawdopodobnie zwraca h=0, a to źle
+//        //if(z-currentH>0 || z>50)
+//        //if(currentH<-100000)
+//        
+//        if(z-currentH>=0)
+//        {
+//            //discard;
+//            //gl_FragDepth = currentH;
+//            Height = currentH;
+//            //res = vec4(currentH,0,currentH,1);
+//            gl_FragDepth = 1-currentH;
+//        }
+//        else
+//        {
+//            //FragColor = vec4(1.0f, 1.0f, 0.0f, 1.0f);
+//            //Height = z*0.0001f + 0.5f;
+//            //gl_FragDepth = z;
+//            Height = z;
+//            //res = vec4(z,0,z,1);
+//            gl_FragDepth = 1-z;
+//        } 
+//    }

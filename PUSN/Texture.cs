@@ -113,6 +113,14 @@ namespace PUSN
                 0, PixelFormat.Red, PixelType.Float, data);
         }
 
+        public void UpdateDepth(Vector2 Res)
+        {
+            Use();
+            GL.TexImage2D(TextureTarget.Texture2D,
+            0, (PixelInternalFormat)All.DepthComponent32,
+            (int)Res.X, (int)Res.Y,
+            0, PixelFormat.DepthComponent, PixelType.UnsignedInt, IntPtr.Zero);
+        }
         public Texture(Vector3[,] data, int unit)
         {
             Handle = GL.GenTexture();
