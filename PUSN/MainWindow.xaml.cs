@@ -132,6 +132,11 @@ namespace PUSN
             //RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
         }
 
+        private void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            FileManager.Load();
+        }
+
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
             terrain.ResetTexture();

@@ -55,7 +55,7 @@
         />
 
         <StackPanel Grid.Row="1" Grid.Column="2" VerticalAlignment="Top">
-            <Button x:Name="OpenFileButton" Content="Open File" Margin="10,5,10,5"/>
+            <Button x:Name="OpenFileButton" Content="Open File" Margin="10,5,10,5" Click="OpenFileButton_Click"/>
             <GroupBox Header="Material Parameters" Margin="5,0,5,0">
                 <StackPanel>
                     <DockPanel VerticalAlignment="Center" Margin="5">
