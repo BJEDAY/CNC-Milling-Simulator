@@ -42,6 +42,7 @@ namespace PUSN
         MillingTool tool;
         Terrain terrain;
         Cutter cutter;
+        Sphere sphere;
         float currentH = 0;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
@@ -107,9 +108,15 @@ namespace PUSN
 
             terrain = new Terrain(new Vector2(300, 300), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
 
+            
+
             cutter = new Cutter();
             cutter.Translation = new Vector3(0f, 0f, 0f);
             cutter.UpdateModelMatrix();
+
+            sphere = new Sphere();
+            sphere.Translation = new Vector3(15f, 0f, 5f);
+            sphere.UpdateModelMatrix();
         }
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
@@ -190,6 +197,9 @@ namespace PUSN
             GL.ClearColor(Color4.Blue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
+            //GL.DepthFunc(DepthFunction.Always);
+            sphere.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
+            //sphere.RenderLines(shader,camera.viewMatrix,camera.projectionMatrix);
             cutter.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
             terrain.Render(terrainShader, camera.viewMatrix, camera.projectionMatrix,camera.pos,terrainColor);
 
