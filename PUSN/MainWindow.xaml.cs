@@ -114,9 +114,9 @@ namespace PUSN
             cutter.Translation = new Vector3(0f, 0f, 0f);
             cutter.UpdateModelMatrix();
 
-            sphere = new Sphere();
-            sphere.Translation = new Vector3(15f, 0f, 5f);
-            sphere.UpdateModelMatrix();
+            //sphere = new Sphere();
+            //sphere.Translation = new Vector3(15f, 0f, 5f);
+            //sphere.UpdateModelMatrix();
         }
 
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
@@ -198,7 +198,7 @@ namespace PUSN
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             //GL.DepthFunc(DepthFunction.Always);
-            sphere.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
+            //sphere.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
             //sphere.RenderLines(shader,camera.viewMatrix,camera.projectionMatrix);
             cutter.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
             terrain.Render(terrainShader, camera.viewMatrix, camera.projectionMatrix,camera.pos,terrainColor);

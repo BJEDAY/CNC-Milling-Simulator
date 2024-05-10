@@ -35,8 +35,12 @@ namespace PUSN.SceneModels
         public int ResX { get; set; }
         //public int ResY { get; set; }
 
+        Sphere sphere;
         public Cutter()
         {
+            sphere = new Sphere();
+            sphere.Rot = new Vector3(180, 0, 0);
+            sphere.UpdateModelMatrix();
             ObjectID = 0;
             ObjectName = $"Cutter {ObjectID}";
             Radius = 3.0f;
@@ -271,6 +275,9 @@ namespace PUSN.SceneModels
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);    //PrimitiveType.Triangles
             //GL.BindVertexArray(0);
+
+            // if spherical draw half of sphere 
+            sphere.Render(shader,View,Perspective,cameraPos,ObjectColor);
         }
     }
 }

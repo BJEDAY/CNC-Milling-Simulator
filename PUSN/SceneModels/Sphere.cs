@@ -4,6 +4,7 @@ using PUSN.Shaders;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,8 @@ namespace PUSN.SceneModels
         public Vector3 Translation { get; set; }
         public Vector3 Scale { get; set; }
 
+        bool HalfSphere;
+
         float[] vertices; int[] indices; //float[] normals; normals are kept inside vertices array
 
         int[] lineInd;
@@ -32,14 +35,15 @@ namespace PUSN.SceneModels
 
         public Sphere()
         {
-            SectorCount = 32;
-            StackCount = 32;
-            Radius = 10.0f;
+            HalfSphere = true;
+            SectorCount = 120;
+            StackCount = 120;
+            Radius = 3.0f;
             Height = 10.0f;
             ResX = 50;
             //ResY = 36;
             Rot = new Vector3(0, 0, 0);
-            Translation = new Vector3(0, 0, 0);
+            Translation = new Vector3(0, 0, 0f);
             Scale = Vector3.One;
             vertices = new float[] {-1, -1, 0,  0,0,-1,
                                     -1,  1, 0,  0,0,-1,
@@ -107,7 +111,10 @@ namespace PUSN.SceneModels
             float PhiStep = (float)(Math.PI / StackCount);
             float Phi, Theta;
 
-            for(int i=0; i<= StackCount; ++i)
+            int Max = StackCount;
+            if (HalfSphere) { Max /=  2; }
+
+            for(int i=0; i<= Max; ++i)
             {
                 Phi = (float)(Math.PI / 2 - i * PhiStep);
                 RCos = (float)(Radius * Math.Cos(Phi));
@@ -143,7 +150,7 @@ namespace PUSN.SceneModels
             List<int> JustHorizon = new List<int>();
 
             int k1, k2; //k1 is point on upper horizontal line, k2 is on one line beneath it, when you add +1 you have got point on right
-            for(int i=0; i<StackCount; ++i) // that go almost to end (so it don't overwrite the same triangles again)
+            for(int i=0; i< Max; ++i) // that go almost to end (so it don't overwrite the same triangles again)
             {
                 k1 = i * (SectorCount + 1); // start of current stack
                 k2 = k1 + SectorCount + 1;  // start of next stack
