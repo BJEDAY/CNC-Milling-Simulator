@@ -38,10 +38,14 @@ namespace PUSN.SceneModels
         {
             lineShader.Use();
             lineShader.SetInt("heights", Sampler);
+            if(Spherical) lineShader.SetInt("Spherical", 1);
+            else lineShader.SetInt("Spherical", 0);
             line.Draw(lineShader);
 
             dotShader.Use();
             dotShader.SetInt("heights", Sampler);
+            if (Spherical) dotShader.SetInt("Spherical", 1);
+            else dotShader.SetInt("Spherical", 0);
             s.Draw(dotShader);
             e.Draw(dotShader);
         }

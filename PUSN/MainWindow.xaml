@@ -126,7 +126,7 @@
                         <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="0.5"/>
                     </DockPanel>
 
-                    <CheckBox Content="Flat" Margin="5,0,5,0"/>
+                    <CheckBox Name="FlatCheck" Content="Flat" Margin="5,0,5,0" Click="FlatCheck_Click"/>
                 </StackPanel>
             </GroupBox>
 

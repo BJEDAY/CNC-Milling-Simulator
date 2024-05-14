@@ -44,6 +44,7 @@ namespace PUSN
         Cutter cutter;
         Sphere sphere;
         float currentH = 0;
+        bool flat = false;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
@@ -144,6 +145,11 @@ namespace PUSN
             FileManager.Load();
         }
 
+        private void FlatCheck_Click(object sender, RoutedEventArgs e)
+        {
+            flat = (bool)FlatCheck.IsChecked;
+        }
+
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
             terrain.ResetTexture();
@@ -212,7 +218,7 @@ namespace PUSN
 
         private void RenderToTexture(Vector3 start,  Vector3 end, float r)
         {
-            terrain.RenderToHeight(start, end, r, dotShader, thickLineShader);
+            terrain.RenderToHeight(start, end, r, dotShader, thickLineShader, !flat);
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
         }
 

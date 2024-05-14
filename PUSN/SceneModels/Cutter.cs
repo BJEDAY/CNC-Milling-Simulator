@@ -40,6 +40,7 @@ namespace PUSN.SceneModels
         {
             sphere = new Sphere();
             sphere.Rot = new Vector3(180, 0, 0);
+            sphere.Translation = new Vector3(0,0,0.02f);
             sphere.UpdateModelMatrix();
             ObjectID = 0;
             ObjectName = $"Cutter {ObjectID}";

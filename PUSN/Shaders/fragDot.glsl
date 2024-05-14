@@ -38,7 +38,7 @@ void main()
 
         float r = (vec4(0, 0, Radius, 0) * transform).z*2;
 
-        float z =  frag_in.ModelXYZ.z*2 *Spherical + (1-deltaZ)*r;  
+        float z =  frag_in.ModelXYZ.z*2 +(Spherical * (1-deltaZ)*r);  
            
         // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
         if(currentH == 10000)

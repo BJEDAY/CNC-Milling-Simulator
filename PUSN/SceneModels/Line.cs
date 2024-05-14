@@ -40,7 +40,7 @@ namespace PUSN.SceneModels
             shader.Use();
             shader.SetFloat("Radius", ToolRadius);
             shader.SetMatrix4("transform", ModelMatrix);
-            shader.SetInt("Spherical", 1); //1 - spherical shaped tool end
+            //shader.SetInt("Spherical", 1); //1 - spherical shaped tool end
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Lines, 2, DrawElementsType.UnsignedInt, 0);
         }

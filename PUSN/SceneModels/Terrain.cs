@@ -154,7 +154,7 @@ namespace PUSN.SceneModels
             }
         }
 
-        public void RenderToHeight(Vector3 start, Vector3 end,float r, ShaderGeometry geo, ShaderGeometry line)
+        public void RenderToHeight(Vector3 start, Vector3 end, float r, ShaderGeometry geo, ShaderGeometry line, bool Spherical)
         {
             // Step 1: Mill on GPU and render it to Temp texture
             tool.Update(start,end,r);
@@ -166,6 +166,7 @@ namespace PUSN.SceneModels
             //GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.DepthFunc(DepthFunction.Less);
             //GL.DepthFunc(DepthFunction.Always);
+            tool.Spherical = Spherical;
             tool.Draw(geo, line);
             GL.DepthFunc(DepthFunction.Less);
             // Step 2: Render Temp texture to Height texture

@@ -112,7 +112,7 @@ namespace PUSN.SceneModels
             float Phi, Theta;
 
             int Max = StackCount;
-            if (HalfSphere) { Max /=  2; }
+            if (HalfSphere) { Max = (int)(0.50f * Max);  }   //Max /=  2; }
 
             for(int i=0; i<= Max; ++i)
             {

@@ -37,7 +37,7 @@ namespace PUSN.SceneModels
             //Draw Thick Line
             shader.Use();
             shader.SetFloat("Radius", ToolRadius);
-            shader.SetInt("Spherical", 1); //1 - spherical shaped tool end
+            //shader.SetInt("Spherical", 1); //1 - spherical shaped tool end
             shader.SetMatrix4("transform", ModelMatrix);
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Points, 1, DrawElementsType.UnsignedInt, 0);
