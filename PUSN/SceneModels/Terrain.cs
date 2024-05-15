@@ -31,6 +31,8 @@ namespace PUSN.SceneModels
 
         float[] vertices; int[] indices; float[] normals;
 
+        public float CurrentWindowWidth, CurrentWindowHeight;
+
         public Texture heightMap;
         private Texture tempMap;    
         private Texture depthMap;
@@ -175,6 +177,7 @@ namespace PUSN.SceneModels
 
 
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.Viewport(0, 0, (int)CurrentWindowWidth, (int)CurrentWindowHeight);
         }
         public void UpdateParameters(Vector2 s, Vector2i r)
         {

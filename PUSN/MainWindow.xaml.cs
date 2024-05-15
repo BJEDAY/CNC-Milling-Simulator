@@ -40,6 +40,7 @@ namespace PUSN
         ViewPerspectiveSettings perspectiveSettings;
         System.Windows.Point prev_mouse;
         MillingTool tool;
+        SimulationController simulationController;
         Terrain terrain;
         Cutter cutter;
         Sphere sphere;
@@ -83,11 +84,12 @@ namespace PUSN
             };
             OpenTkControl.Start(settings);
 
-            SetupObjects();
-            SetupOpenGL();
-            SetupShaders();
-            SetupCamera();
             
+            SetupOpenGL();
+            SetupObjects();
+            SetupCamera();
+            SetupShaders();
+            SetupSim();
         }
         //
 
@@ -108,8 +110,10 @@ namespace PUSN
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
             terrain = new Terrain(new Vector2(300, 300), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
+            terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
 
-            
+
 
             cutter = new Cutter();
             cutter.Translation = new Vector3(0f, 0f, 0f);
@@ -118,15 +122,25 @@ namespace PUSN
             //sphere = new Sphere();
             //sphere.Translation = new Vector3(15f, 0f, 5f);
             //sphere.UpdateModelMatrix();
+            
         }
 
+        private void SetupSim()
+        {
+            simulationController = new SimulationController(ref terrain, ref cutter, ref dotShader, ref thickLineShader);
+        }
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {
-            float sX=0, sY=0, sZ=0;
+
+        }
+
+        private void MillButton_Click(object sender, RoutedEventArgs e)
+        {
+            float sX = 0, sY = 0, sZ = 0;
             if (!float.TryParse(StartX.Text, out sX)) { Console.WriteLine("Wrong start X!"); }
             if (!float.TryParse(StartY.Text, out sY)) { Console.WriteLine("Wrong start Y!"); }
-            if (!float.TryParse(StartZ.Text, out sZ)) { Console.WriteLine("Wrong start Z!"); }                                 
-            Vector3 start = new Vector3(sX,sY,sZ);
+            if (!float.TryParse(StartZ.Text, out sZ)) { Console.WriteLine("Wrong start Z!"); }
+            Vector3 start = new Vector3(sX, sY, sZ);
 
             float eX = 0, eY = 0, eZ = 0;
             if (!float.TryParse(EndX.Text, out eX)) { Console.WriteLine("Wrong end X!"); }
@@ -142,13 +156,15 @@ namespace PUSN
 
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
-            FileManager.Load();
+            (var pos, int type, float r) = FileManager.Load();
         }
 
         private void FlatCheck_Click(object sender, RoutedEventArgs e)
         {
             flat = (bool)FlatCheck.IsChecked;
         }
+
+
 
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
@@ -219,13 +235,15 @@ namespace PUSN
         private void RenderToTexture(Vector3 start,  Vector3 end, float r)
         {
             terrain.RenderToHeight(start, end, r, dotShader, thickLineShader, !flat);
-            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
+            //GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             //camera.UpdateProjectionMatrix((float)OpenTkControl.ActualWidth, (float)OpenTkControl.ActualHeight, perspectiveSettings.fov, perspectiveSettings.n, perspectiveSettings.f);
             camera.UpdateProj((float)OpenTkControl.ActualWidth / (float)OpenTkControl.ActualHeight);
+            terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
+            terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
         }
 
         private void OpenTkControl_MouseMove(object sender, MouseEventArgs e)

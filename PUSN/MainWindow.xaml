@@ -150,7 +150,7 @@
                         <TextBlock Text="Radius"/>
                         <TextBox Name="Radius" Style="{StaticResource TextboxMillingStyle}" Width="95"/>
                     </DockPanel>
-
+                    <Button x:Name="MillButton" Width="100" Height="20" Content="Mill" Margin="0,5,0,5" Click="MillButton_Click"/>
                     <Button x:Name="ResetMap" Width="100" Height="20" Content="Reset surface" Click="ResetMap_Click"/>
                 </StackPanel>
             </GroupBox>
