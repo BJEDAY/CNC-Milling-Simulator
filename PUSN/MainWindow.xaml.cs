@@ -112,7 +112,7 @@ namespace PUSN
             terrain = new Terrain(new Vector2(300, 300), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
-
+            
 
 
             cutter = new Cutter();
@@ -127,13 +127,22 @@ namespace PUSN
 
         private void SetupSim()
         {
-            simulationController = new SimulationController(ref terrain, ref cutter, ref dotShader, ref thickLineShader);
+            simulationController = new SimulationController(ref terrain, ref cutter, thickLineShader, dotShader);
         }
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {
 
-        }
+            if (simulationController.PosNum > 1)
+            {
+                simulationController.Start();
+            }
+            //simulationController.TestMill();
+            //terrain.RenderToHeight(new Vector3(-120, -120, 34), new Vector3(-120, 120, 34), 16, dotShader, thickLineShader, true); 
+            //var p = new SimulationController(ref terrain, ref cutter,  ref thickLineShader, dotShader);
+            //p.TestMill();
+            //p.Run2(ref terrain, ref dotShader, ref thickLineShader);
 
+        }
         private void MillButton_Click(object sender, RoutedEventArgs e)
         {
             float sX = 0, sY = 0, sZ = 0;
@@ -157,6 +166,10 @@ namespace PUSN
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)
         {
             (var pos, int type, float r) = FileManager.Load();
+            bool Spherical;
+            if (type == 0) Spherical = true;
+            else Spherical = false;
+            simulationController.SetData(pos, r, Spherical);
         }
 
         private void FlatCheck_Click(object sender, RoutedEventArgs e)
@@ -216,6 +229,7 @@ namespace PUSN
         }
         private void OpenTkControl_OnRender(TimeSpan obj)
         {
+            var currentTime = obj.TotalMilliseconds;
             GL.ClearColor(Color4.Blue);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -230,6 +244,8 @@ namespace PUSN
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);
+
+            simulationController.Run((float)currentTime);
         }
 
         private void RenderToTexture(Vector3 start,  Vector3 end, float r)
