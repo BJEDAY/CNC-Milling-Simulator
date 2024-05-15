@@ -116,8 +116,9 @@ namespace PUSN
 
 
             cutter = new Cutter();
-            cutter.Translation = new Vector3(0f, 0f, 0f);
-            cutter.UpdateModelMatrix();
+            //cutter.Translation = new Vector3(0f, 0f, 0f);
+            //cutter.UpdateModelMatrix();
+            cutter.SetRadius(7);
 
             //sphere = new Sphere();
             //sphere.Translation = new Vector3(15f, 0f, 5f);

@@ -44,18 +44,32 @@ namespace PUSN.SceneModels
             sphere.UpdateModelMatrix();
             ObjectID = 0;
             ObjectName = $"Cutter {ObjectID}";
-            Radius = 3.0f;
-            Height = 10.0f;
+            Radius = 1.0f;
+            Height = 20.0f;
             ResX = 50;
             //ResY = 36;
             Rot = new Vector3(90, 0, 0);
-            Translation = new Vector3(0, -5, 0);
+            Translation = new Vector3(0, 0, 0);
             Scale = Vector3.One;
             IsSelected = false;
             vertices = new float[0];
             indices = new int[0];
             //normals = new float[0];
             GenerateVAO();
+            UpdateModelMatrix();
+        }
+
+        public void SetRadius(float radius)
+        {
+            sphere.Scale = new Vector3(radius, radius, radius);
+            Scale = new Vector3(radius, 1, radius);
+            UpdateModelMatrix();
+        }
+
+        public void SetPosition(Vector3 pos)
+        {
+            Translation = pos;
+            sphere.Translation = pos + new Vector3(0, 0, 0.05f);
             UpdateModelMatrix();
         }
 
@@ -259,6 +273,7 @@ namespace PUSN.SceneModels
 
         public void UpdateModelMatrix()
         {
+            sphere.UpdateModelMatrix();
             ModelMatrix = Matrix4.Identity;
             ModelMatrix = ModelMatrix * Matrix4.CreateScale(Scale);
             ModelMatrix = ModelMatrix * Matrix4.CreateRotationX(MathHelper.DegreesToRadians(Rot[0])) * Matrix4.CreateRotationY(MathHelper.DegreesToRadians(Rot[1])) * Matrix4.CreateRotationZ(MathHelper.DegreesToRadians(Rot[2]));

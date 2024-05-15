@@ -58,6 +58,8 @@ namespace PUSN
             run = true;
             pause = false;
             stop = false;
+            cutter.SetPosition(positions[0]+new Vector3(0,0,CurrentRadius));
+            cutter.SetRadius(CurrentRadius);
         }
 
         public void Stop()
@@ -82,19 +84,15 @@ namespace PUSN
         {
             if(run)
             {
-                var s = positions[CurrentFrameIndex-1];
-                var e = positions[CurrentFrameIndex];
-                terrain.RenderToHeight(s,e,CurrentRadius,dot,line,Spherical);
-
-                // TODO: Animate cutter
-                //cutter.Translation = e;
-                //cutter.UpdateVAO();
-                //Thread.Sleep(Wait);
-
-
                 TotalMS += currentMS;
                 if(TotalMS >= Wait)
                 {
+                    var s = positions[CurrentFrameIndex - 1];
+                    var e = positions[CurrentFrameIndex];
+                    terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
+
+                    cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));
+
                     CurrentFrameIndex++;
                     TotalMS = 0;    //TotalMS zbiera czas trwania kolejnych klatek od czasu ostatniego ruchu, gdy ten czas przekroczy czas oczekiwania frezarka robi kolejny ruch i proces się powtarza od poczatku
                 }

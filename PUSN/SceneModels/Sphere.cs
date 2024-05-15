@@ -38,7 +38,7 @@ namespace PUSN.SceneModels
             HalfSphere = true;
             SectorCount = 120;
             StackCount = 120;
-            Radius = 3.0f;
+            Radius = 1.0f;
             Height = 10.0f;
             ResX = 50;
             //ResY = 36;
