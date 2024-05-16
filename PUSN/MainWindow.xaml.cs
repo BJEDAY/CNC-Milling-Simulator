@@ -45,6 +45,7 @@ namespace PUSN
         Cutter cutter;
         Sphere sphere;
         float currentH = 0;
+        int currentRes;
         bool flat = false;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
@@ -112,11 +113,11 @@ namespace PUSN
             terrain = new Terrain(new Vector2(300, 300), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
-            
+            currentRes = terrain.Res.X;
 
 
             cutter = new Cutter();
-            //cutter.Translation = new Vector3(0f, 0f, 0f);
+            cutter.SetPosition(new Vector3(-150, -150, 70));
             //cutter.UpdateModelMatrix();
             cutter.SetRadius(7);
 
@@ -198,7 +199,7 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-10, -20, 70);
+            lightPos = new Vector3(-170, -170, 170);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);
@@ -224,6 +225,7 @@ namespace PUSN
             terrainShader.Use();
             terrainShader.SetVec3("lightPos", lightPos);
             terrainShader.SetVec3("lightColor", lightColor);
+            terrainShader.SetInt("currentRes", currentRes);
 
             dotShader.SetInt("heights", terrain.heightMap.sampler);
             thickLineShader.SetInt("heights",terrain.heightMap.sampler);

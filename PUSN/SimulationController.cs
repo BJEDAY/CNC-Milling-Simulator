@@ -38,7 +38,7 @@ namespace PUSN
             cutter = cut;
             line = l;
             dot = d;
-            Wait =  1000;
+            Wait =  10;
             run = false;
             pause = false;
             stop = false;

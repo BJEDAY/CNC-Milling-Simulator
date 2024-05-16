@@ -15,7 +15,7 @@ namespace PUSN.SceneModels
     public class Terrain
     {
         Vector2 Size { get; set; }
-        Vector2i Res { get; set; }
+        public Vector2i Res { get; set; }
 
         Matrix4 ModelMatrix;
         Matrix4 DisplayMatrix;

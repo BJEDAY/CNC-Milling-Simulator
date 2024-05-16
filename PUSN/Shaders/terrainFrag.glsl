@@ -9,6 +9,7 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
+uniform int currentRes;
 
 uniform sampler2D heights;
 
@@ -31,22 +32,21 @@ void main()
 
     //diffuse
     //vec3 norm = normalize(Normal);    //now it's better to calculate normal straight from heightmap 
-    vec2 t = Texture + vec2(0, 0.001);
-    vec2 b = Texture + vec2(0, -0.001);
-    vec2 l = Texture + vec2(-0.001,0);
-    vec2 r = Texture + vec2(0.001,0);
+    float delta = 1f/currentRes;
+    vec2 t = Texture + vec2(0, delta);
+    vec2 b = Texture + vec2(0, -delta);
+    vec2 l = Texture + vec2(-delta,0);
+    vec2 r = Texture + vec2(delta,0);
     
     float top = texture2D(heights, t).r;
     float bottom = texture2D(heights,b).r;
     float left = texture2D(heights, l).r;
     float right = texture2D(heights, r).r;
 
-    
-    //normal can be calculated with the gradient of surface function. In that case
-    //it can be done by making derivative on horizontal and vertical axis (example: value on the right minus value on left diveded by the differrence in x space)
-    //if(t.y>1) vec3 norm = normalize(vec3((right-left)/0.02,-(bottom-top)/0.02,1));
-    
-    vec3 norm = normalize(vec3((right-left)/0.002,-(bottom-top)/0.002,1));
+      
+    vec3 norm = normalize(vec3((left-right)/(2*delta),(bottom-top)/(2*delta),1));
+    //vec3 norm = normalize(vec3((right-left)*0.001f,-(bottom-top)*0.0001f,1));
+    //vec3 norm = normalize(vec3((right-left)*0.001f+1,-(bottom-top)*0.0001f,0));
 
     //vec3 norm = normalize(vec3(0, 0, 1));
     
