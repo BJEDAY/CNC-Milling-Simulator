@@ -45,7 +45,7 @@ namespace PUSN.SceneModels
             ObjectID = 0;
             ObjectName = $"Cutter {ObjectID}";
             Radius = 1.0f;
-            Height = 20.0f;
+            Height = 80.0f;
             ResX = 50;
             //ResY = 36;
             Rot = new Vector3(90, 0, 0);

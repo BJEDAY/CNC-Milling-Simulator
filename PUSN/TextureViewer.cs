@@ -28,6 +28,15 @@ namespace PUSN
               1.0f, 1.0f, 1.0f, 1.0f,   // top right - 2
               -1.0f,1.0f,0.0f,1.0f      // top left - 3
             };
+
+            //verts = new float[20]
+            //{ -1.0f, -1.0f, 1.0f,  0.0f, 0.0f, // bottom left - 0
+            //  1.0f, -1.0f, 1.0f, 1.0f, 0.0f,  // bottom right - 1
+            //  1.0f, 1.0f, 1.0f, 1.0f, 1.0f,   // top right - 2
+            //  -1.0f,1.0f, 1.0f, 0.0f,1.0f      // top left - 3
+            //};
+
+
             indices = new int[6]
             {
                 0, 3, 1,
@@ -55,6 +64,12 @@ namespace PUSN
 
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             GL.EnableVertexAttribArray(1);
+
+            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            //GL.EnableVertexAttribArray(0);
+
+            //GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            //GL.EnableVertexAttribArray(1);
         }
 
         public void UpdateVAO()     // in this case propably Update will never be used
@@ -72,6 +87,22 @@ namespace PUSN
 
             GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 4 * sizeof(float), 2 * sizeof(float));
             GL.EnableVertexAttribArray(1);
+
+            //GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, 5 * sizeof(float), 0);
+            //GL.EnableVertexAttribArray(0);
+
+            //GL.VertexAttribPointer(1, 2, VertexAttribPointerType.Float, false, 5 * sizeof(float), 3 * sizeof(float));
+            //GL.EnableVertexAttribArray(1);
+        }
+
+        public void DrawZeroEdges(Shader shader, Texture tex)
+        {
+            shader.Use();
+            tex.Use();  //default tex unit is 0
+            shader.SetInt("texture0", (int)tex.Unit);
+            shader.SetInt("edges", 1);
+            GL.BindVertexArray(VAO);
+            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         }
 
         public void Draw(Shader shader, Texture tex)
@@ -79,6 +110,7 @@ namespace PUSN
             shader.Use();
             tex.Use();  //default tex unit is 0
             shader.SetInt("texture0", (int)tex.Unit);
+            shader.SetInt("edges", 0);
             GL.BindVertexArray(VAO);
             GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         }

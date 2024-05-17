@@ -22,6 +22,8 @@ void main()
     Texture = texCoord;
 
     float h = texture2D(heights, texCoord).r;
+    //if(texCoord.x == 0 || texCoord.x == 1 || texCoord.y ==0 || texCoord.y == 1) h =(vec4(0,0,0.0f,1.0) * display).z;
+    //else 
     h = (vec4(0,0,h,1.0) * display).z;
     //if (h < 1) aPosition = vec3(0, 0, 0);
     //if (h = 0) FragPos.Z = 0.0f;

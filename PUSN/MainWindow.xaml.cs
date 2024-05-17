@@ -106,11 +106,11 @@ namespace PUSN
             var cylinderek = new Cylinder();
             cylinderek.UpdateModelMatrix();
 
-            block_size = new Vector3(300, 300, 50);   //x,y,z
+            block_size = new Vector3(150, 150, 50);   //x,y,z
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(300, 300), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
             currentRes = terrain.Res.X;
@@ -130,6 +130,7 @@ namespace PUSN
         private void SetupSim()
         {
             simulationController = new SimulationController(ref terrain, ref cutter, thickLineShader, dotShader);
+            terrain.ResetTexture();
         }
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {
@@ -211,6 +212,10 @@ namespace PUSN
             shader = new Shader(ShaderVertLoc, ShaderFragLoc);
             thickLineShader = new ShaderGeometry(ShaderVertLocLine, ShaderFragLocLine, ShaderGeoLocLine);
             dotShader = new ShaderGeometry(ShaderVertLocDot, ShaderFragLocDot, ShaderGeoLocDot);
+
+            terrain.line = thickLineShader;
+            terrain.dot = dotShader;
+
             phongShader = new Shader(ShaderVertLocPhong, ShaderFragLocPhong);
             terrainShader = new Shader(ShaderVertLocTerrain, ShaderFragLocTerrain);
             texShader = new Shader(ShaderVertLocViewerTex, ShaderFragLocViewerTex);

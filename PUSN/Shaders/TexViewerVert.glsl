@@ -10,6 +10,7 @@ layout(location = 1) in vec2 aTexCoord;
 // Instead, we create an output variable so we can send that data to the fragment shader.
 
 out vec2 texCoord;
+uniform int edges;
 
 void main(void)
 {
@@ -18,5 +19,6 @@ void main(void)
     
     texCoord = aTexCoord;
 
-    gl_Position = vec4(aPosition, 1.0);
+    gl_Position = vec4(aPosition.xy,0.0f, 1.0);
+    
 }

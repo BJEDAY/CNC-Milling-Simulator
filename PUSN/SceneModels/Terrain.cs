@@ -9,6 +9,8 @@ using OpenTK.Graphics.OpenGL4;
 using PUSN.Shaders;
 using System.Transactions;
 using System.Windows.Media.Media3D;
+using System.Collections;
+using System.Windows.Shapes;
 
 namespace PUSN.SceneModels
 {
@@ -37,6 +39,7 @@ namespace PUSN.SceneModels
         private Texture tempMap;    
         private Texture depthMap;
         public TextureViewer TexViewer;
+        public ShaderGeometry dot, line;
 
         // Trzeba to zassać z głownego okna
         public Shader TexShader;
@@ -61,23 +64,29 @@ namespace PUSN.SceneModels
             vertices = new float[1];
             indices = new int[1];
             normals = new float[1];
-            //heights = new float[Res.X*Res.Y];
+            heights = new float[(Res.X+1)*(Res.Y+1)];
             intHeights = new float[Res.X+1,Res.Y+1];
 
-            BlockSize = new Vector3(300, 300, 50);   //x,y,z
+            BlockSize = new Vector3(s.X, s.Y, 50);   //x,y,z
             //Size = new Vector2(300, 300);
             Size = s;
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, BlockSize);
             DisplayMatrix = Matrix4.CreateScale(s.X, s.Y, 50);
 
-            //for (int i=0;i<Res.X;i++)
-            //{
-            //    for(int j=0;j<Res.Y;j++)
-            //    {
-            //        setHeight(i, j, 125.0f);
-            //    }
-            //}
+            for (int i = 0; i <= Res.X; i++)
+            {
+                for (int j = 0; j <= Res.Y; j++)
+                {
+                    //if (i == 0 || j == 0 || i == Res.X || j == Res.Y) setHeight(i, j, 0.0f);
+                    //if (i > Res.X-10 || j > Res.Y-10) setHeight(i, j, 0.0f);
+                    //else if (i <10 || j <10) setHeight(i, j, 0.0f);
+                    //if(i<500 && i>50) setHeight(i,j, 0.0f);
+                    //if(j<100 && j>50) setHeight(i,j, 0.0f);
+                    //else 
+                        setHeight(i, j, 1.0f);
+                }
+            }
 
             for (int i = 0; i <= Res.X; i++)
             {
@@ -96,14 +105,19 @@ namespace PUSN.SceneModels
             //    intHeights[124, i] = 11f;
             //    intHeights[125, i] = 11f;
             //}
-            
+
             //intHeights[15, 5] = 11f;
             //intHeights[15, 6] = 12f;
             //intHeights[15, 7] = 13f;
 
-            //heightMap = new Texture(heights,Res.X,Res.Y);   
-            heightMap = new Texture(intHeights,0);
-            tempMap = new Texture(intHeights,0);
+
+
+            heightMap = new Texture(heights, 0, Res.X, Res.Y);
+            tempMap = new Texture(heights, 0, Res.X, Res.Y);
+
+            //heightMap = new Texture(intHeights, 0);
+            //tempMap = new Texture(intHeights, 0);
+
             depthMap = new Texture(Res,0);
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
@@ -122,6 +136,9 @@ namespace PUSN.SceneModels
             GL.Clear(ClearBufferMask.DepthBufferBit);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle2);
             GL.Clear(ClearBufferMask.ColorBufferBit);
+
+            RenderResetHeights();
+
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
         }
         private void GenerateFramebuffer()
@@ -176,6 +193,26 @@ namespace PUSN.SceneModels
             TexViewer.Draw(TexShader, tempMap);     //FrameBufferHandle2 jest ustawiony na render do HeightMapy, ale używa TempMapy do wzięcia danych
 
 
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
+            GL.Viewport(0, 0, (int)CurrentWindowWidth, (int)CurrentWindowHeight);
+        }
+
+        public void RenderResetHeights()
+        {
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
+            GL.Viewport(0,0, Res.X, Res.Y);
+            GL.DepthFunc(DepthFunction.Less);
+            TexViewer.DrawZeroEdges(TexShader, heightMap);
+            
+            // ------ JUST TESTING -------
+            //tool.Update(new Vector3(0,0,0), new Vector3(100,0,0), 50f);
+            //tool.Spherical = true;
+            //tool.Draw(dot, line);
+            
+            
+            // przełożenie danych z Temp do głównej tekstury
+            GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle2);
+            TexViewer.Draw(TexShader, tempMap);
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.Viewport(0, 0, (int)CurrentWindowWidth, (int)CurrentWindowHeight);
         }
@@ -326,13 +363,13 @@ namespace PUSN.SceneModels
 
         public void setHeight(int i, int j, float h)    //set height in i column and j row
         {
-            int width = Res.X;
+            int width = Res.X + 1;
             heights[i+j*width] = h;
         }
 
         public float getHeight(int i, int j)
         {
-            int width = Res.X;
+            int width = Res.X + 1;
             return heights[i + j * width];
         }
     }
