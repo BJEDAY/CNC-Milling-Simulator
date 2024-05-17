@@ -106,6 +106,16 @@ namespace PUSN
             //GL.GenerateMipmap(GenerateMipmapTarget.Texture2D);
         }
 
+        public void UpdateTextureData(float[] data, int ResX, int ResY)
+        {
+            Use();
+
+            GL.TexImage2D(TextureTarget.Texture2D,
+                0, PixelInternalFormat.R32f,
+                ResX, ResY,
+                0, PixelFormat.Red, PixelType.Float, data);
+        }
+
         public Texture(Vector2 Res, int unit)       // this is Depthbuffer texture constructor
         {
             Handle = GL.GenTexture();
@@ -125,6 +135,15 @@ namespace PUSN
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+        }
+
+        public void UpdateDepthData(int ResX, int ResY)
+        {
+            Use();
+            GL.TexImage2D(TextureTarget.Texture2D,
+            0, (PixelInternalFormat)All.DepthComponent32,
+            ResX, ResY,
+            0, PixelFormat.DepthComponent, PixelType.UnsignedInt, IntPtr.Zero);
         }
 
         public void UpdateTexture(float[,] data)

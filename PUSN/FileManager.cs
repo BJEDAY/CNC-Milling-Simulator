@@ -59,7 +59,7 @@ namespace PUSN
             {
                 if (name[i] == '.') IndDot = i;
             }
-            if(IndDot == -1 ) { MessageBox.Show("Name of path file is incorrect! Dot is missing!"); }
+            if(IndDot == -1 ) { MessageBox.Show("Name of path file is incorrect! Dot is missing!"); return (-1,-1); }
             char t = name[IndDot + 1];
             string radius = name[(IndDot + 2)..];
             int type = -1;       // 0 - spherical, 1 - flat

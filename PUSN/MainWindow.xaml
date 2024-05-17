@@ -17,6 +17,22 @@
             <Setter Property="TickFrequency" Value="0.01"/>
         </Style>
 
+        <Style x:Key="ResSlider" TargetType="Slider">
+            <Setter Property="Maximum" Value="3000"/>
+            <Setter Property="Minimum" Value="50"/>
+            <Setter Property="TickPlacement" Value="BottomRight"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="1"/>
+        </Style>
+
+        <Style x:Key="SizeSlider" TargetType="Slider">
+            <Setter Property="Maximum" Value="500"/>
+            <Setter Property="Minimum" Value="1"/>
+            <Setter Property="TickPlacement" Value="BottomRight"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="1"/>
+        </Style>
+
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="TextAlignment" Value="Right"/>
@@ -59,41 +75,42 @@
             <GroupBox Header="Material Parameters" Margin="5,0,5,0">
                 <StackPanel>
                     <DockPanel VerticalAlignment="Center" Margin="5">
-                        <Label Content="Division X"/>
-                        <TextBox Text="{Binding ElementName=DivX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="DivX" Value="0.5"/>
+                        <Label Content="Resolution X"/>
+                        <TextBox Text="{Binding ElementName=ResX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource ResSlider}" Name="ResX" Value="1500"/>
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
-                        <Label Content="Division Y"/>
-                        <TextBox Text="{Binding ElementName=DivY, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="DivY" Value="0.5"/>
+                        <Label Content="Resolution Y"/>
+                        <TextBox Text="{Binding ElementName=ResY, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource ResSlider}" Name="ResY" Value="1500"/>
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Size X [cm]"/>
                         <TextBox Text="{Binding ElementName=SizeX, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeX" Value="0.5"/>
+                        <Slider  Style="{StaticResource SizeSlider}" Name="SizeX" Value="150"/>
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Size Y [cm]"/>
                         <TextBox Text="{Binding ElementName=SizeY, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeY" Value="0.5"/>
+                        <Slider  Style="{StaticResource SizeSlider}" Name="SizeY" Value="150"/>
                     </DockPanel>
 
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Size Z [cm]"/>
                         <TextBox Text="{Binding ElementName=SizeZ, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="SizeZ" Value="0.5"/>
+                        <Slider  Style="{StaticResource SizeSlider}" Name="SizeZ" Value="50"/>
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Default Height [cm]"/>
                         <TextBox Text="{Binding ElementName=DefHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="DefHeight" Value="0.5"/>
+                        <Slider  Style="{StaticResource SizeSlider}" Name="DefHeight" Value="0.5"/>
                     </DockPanel>
+                    <Button x:Name="SetMaterial" Content="Set"  Margin="10,5,10,5" Click="SetMaterial_Click"/>
 
                 </StackPanel>
             </GroupBox>

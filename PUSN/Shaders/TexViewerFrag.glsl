@@ -10,6 +10,8 @@ in vec2 texCoord;
 // By default, the unit is 0, so no code-related setup is actually needed.
 uniform sampler2D texture0;
 uniform int edges;
+uniform int ResX;
+uniform int ResY;
 
 void main()
 {
@@ -18,7 +20,8 @@ void main()
     float color = texture(texture0,texCoord).r;
     if(edges==1)
     {
-          if(texCoord.x <0.001 || texCoord.x>0.999 || texCoord.y<0.001 || texCoord.y>0.999) color *= 0.001f;
+          if(texCoord.x <=(1.0f/ResX) || texCoord.x>=(1.0f - 1.0f/ResX)) color *= 0.001f;
+          else if(texCoord.y <=(1.0f/ResY) || texCoord.y>=(1.0f - 1.0f/ResY)) color *= 0.001f;
           else color = 1.0f;
           gl_FragDepth = color;
     }

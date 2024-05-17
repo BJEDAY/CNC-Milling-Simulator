@@ -95,12 +95,15 @@ namespace PUSN
             //GL.EnableVertexAttribArray(1);
         }
 
-        public void DrawZeroEdges(Shader shader, Texture tex)
+        public void DrawZeroEdges(Shader shader, Texture tex, int ResX, int ResY)
         {
             shader.Use();
             tex.Use();  //default tex unit is 0
             shader.SetInt("texture0", (int)tex.Unit);
             shader.SetInt("edges", 1);
+            shader.SetInt("ResX", ResX);
+            shader.SetInt("ResY", ResY);
+
             GL.BindVertexArray(VAO);
             GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         }

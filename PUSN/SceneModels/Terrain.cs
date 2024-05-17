@@ -78,13 +78,7 @@ namespace PUSN.SceneModels
             {
                 for (int j = 0; j <= Res.Y; j++)
                 {
-                    //if (i == 0 || j == 0 || i == Res.X || j == Res.Y) setHeight(i, j, 0.0f);
-                    //if (i > Res.X-10 || j > Res.Y-10) setHeight(i, j, 0.0f);
-                    //else if (i <10 || j <10) setHeight(i, j, 0.0f);
-                    //if(i<500 && i>50) setHeight(i,j, 0.0f);
-                    //if(j<100 && j>50) setHeight(i,j, 0.0f);
-                    //else 
-                        setHeight(i, j, 1.0f);
+                    setHeight(i, j, 1.0f);
                 }
             }
 
@@ -96,35 +90,52 @@ namespace PUSN.SceneModels
                 }
             }
 
-            //for (int i = 150; i <= 175; i++)
-            //{
-            //    intHeights[120, i] = 11f;
-            //    intHeights[121, i] = 11f;
-            //    intHeights[122, i] = 11f;
-            //    intHeights[123, i] = 11f;
-            //    intHeights[124, i] = 11f;
-            //    intHeights[125, i] = 11f;
-            //}
-
-            //intHeights[15, 5] = 11f;
-            //intHeights[15, 6] = 12f;
-            //intHeights[15, 7] = 13f;
-
-
-
             heightMap = new Texture(heights, 0, Res.X, Res.Y);
             tempMap = new Texture(heights, 0, Res.X, Res.Y);
-
-            //heightMap = new Texture(intHeights, 0);
-            //tempMap = new Texture(intHeights, 0);
-
             depthMap = new Texture(Res,0);
+
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateFramebuffer();
             GenerateVAO();
             UpdateModelMatrix();
+        }
+
+        public void SetNewData(Vector3 Size,Vector2i Res)
+        {
+            this.Size = Size.Xy; this.Res = Res; ModelMatrix = Matrix4.Identity; Rot = Vector3.Zero; Scale = Vector3.One;
+            Translation = Vector3.Zero;
+            vertices = new float[1];
+            indices = new int[1];
+            normals = new float[1];
+            heights = new float[((int)Res.X + 1) * (Res.Y + 1)];
+            BlockSize = new Vector3(Size);
+            tool.UpdateBlockSize(BlockSize);
+            DisplayMatrix = Matrix4.CreateScale(Size);
+
+            for (int i = 0; i <= Res.X; i++)
+            {
+                for (int j = 0; j <= Res.Y; j++)
+                {
+                    setHeight(i, j, 1.0f);
+                }
+            }
+
+            // jednak chyba nie da rady tak elegancko :( Jak sie zmiejszy rozdzialke na mniejsza to opengl szaleje
+
+            heightMap.UpdateTextureData(heights, Res.X, Res.Y);
+            tempMap.UpdateTextureData(heights,Res.X,Res.Y);
+            depthMap.UpdateDepthData(Res.X, Res.Y);
+
+            //heightMap = new Texture(heights, 0, Res.X, Res.Y);
+            //tempMap = new Texture(heights, 0, Res.X, Res.Y);
+            //depthMap = new Texture(Res, 0);
+
+            GenerateFramebuffer();
+            GenerateVAO();
+            UpdateModelMatrix();
+            ResetTexture();
         }
 
         public void ResetTexture()
@@ -202,7 +213,7 @@ namespace PUSN.SceneModels
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, FrameBufferHandle);
             GL.Viewport(0,0, Res.X, Res.Y);
             GL.DepthFunc(DepthFunction.Less);
-            TexViewer.DrawZeroEdges(TexShader, heightMap);
+            TexViewer.DrawZeroEdges(TexShader, heightMap, Res.X, Res.Y);
             
             // ------ JUST TESTING -------
             //tool.Update(new Vector3(0,0,0), new Vector3(100,0,0), 50f);
@@ -247,7 +258,13 @@ namespace PUSN.SceneModels
 
                     //just temporary for phong testing
                     //if(i==(int)Res.X/2) z= 1.0f;
-                    
+
+                    // jak to jest dolna-górna lub prawa-lewa krawędź (czyli dla i=0, i=ResX, j=0 i j =ResY) to trzeba te wierzchołki wsunać "pod dywan"
+                    if (i == 0) x += dx;
+                    if (i == Res.X) x -= dx;
+                    if (j == 0) y += dy;
+                    if (j == Res.Y) y -= dy;
+
                     vertices.Add(x); vertices.Add(y);vertices.Add(z);
 
                     

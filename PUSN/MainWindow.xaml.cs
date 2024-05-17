@@ -110,7 +110,7 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1500, 1500));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
             currentRes = terrain.Res.X;
@@ -180,7 +180,19 @@ namespace PUSN
             flat = (bool)FlatCheck.IsChecked;
         }
 
+        private void SetMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            Vector2i Res = new Vector2i(1000,1000);
+            Vector3 Size = new Vector3(150, 150, 50);
 
+            Res.X = (int)ResX.Value;
+            Res.Y = (int)ResY.Value;
+            Size.X = (float)SizeX.Value;
+            Size.Y = (float)SizeY.Value;
+            Size.Z = (float)SizeZ.Value;
+
+            terrain.SetNewData(Size, Res);
+        }
 
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
@@ -200,7 +212,7 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-170, -170, 170);
+            lightPos = new Vector3(-150, -200, 170);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);
