@@ -9,7 +9,8 @@ uniform vec3 lightPos;
 uniform vec3 viewPos;
 uniform vec3 lightColor;
 uniform vec3 objectColor;
-uniform int currentRes;
+uniform int currentResX;
+uniform int currentResY;
 
 uniform sampler2D heights;
 
@@ -32,11 +33,12 @@ void main()
 
     //diffuse
     //vec3 norm = normalize(Normal);    //now it's better to calculate normal straight from heightmap 
-    float delta = 1f/currentRes;
-    vec2 t = Texture + vec2(0, delta);
-    vec2 b = Texture + vec2(0, -delta);
-    vec2 l = Texture + vec2(-delta,0);
-    vec2 r = Texture + vec2(delta,0);
+    float deltaX = 1f/currentResX;
+    float deltaY = 1f/currentResY;
+    vec2 t = Texture + vec2(0, deltaY);
+    vec2 b = Texture + vec2(0, -deltaY);
+    vec2 l = Texture + vec2(-deltaX,0);
+    vec2 r = Texture + vec2(deltaX,0);
     
     float top = texture2D(heights, t).r;
     float bottom = texture2D(heights,b).r;
@@ -44,7 +46,7 @@ void main()
     float right = texture2D(heights, r).r;
 
       
-    vec3 norm = normalize(vec3((left-right)/(2*delta),(bottom-top)/(2*delta),1));
+    vec3 norm = normalize(vec3((left-right)/(2*deltaX),(bottom-top)/(2*deltaY),1));
     //vec3 norm = normalize(vec3((right-left)*0.001f,-(bottom-top)*0.0001f,1));
     //vec3 norm = normalize(vec3((right-left)*0.001f+1,-(bottom-top)*0.0001f,0));
 

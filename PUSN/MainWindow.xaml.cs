@@ -45,7 +45,7 @@ namespace PUSN
         Cutter cutter;
         Sphere sphere;
         float currentH = 0;
-        int currentRes;
+        Vector2i currentRes;
         bool flat = false;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
@@ -110,10 +110,10 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1500, 1500));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(20, 20));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
-            currentRes = terrain.Res.X;
+            currentRes = terrain.Res;
 
 
             cutter = new Cutter();
@@ -192,6 +192,10 @@ namespace PUSN
             Size.Z = (float)SizeZ.Value;
 
             terrain.SetNewData(Size, Res);
+            currentRes = Res;
+            terrainShader.Use();
+            terrainShader.SetInt("currentResX", currentRes.X);
+            terrainShader.SetInt("currentResY", currentRes.Y);
         }
 
         private void ResetMap_Click(object sender, RoutedEventArgs e)
@@ -242,7 +246,8 @@ namespace PUSN
             terrainShader.Use();
             terrainShader.SetVec3("lightPos", lightPos);
             terrainShader.SetVec3("lightColor", lightColor);
-            terrainShader.SetInt("currentRes", currentRes);
+            terrainShader.SetInt("currentResX", currentRes.X);
+            terrainShader.SetInt("currentResY", currentRes.Y);
 
             dotShader.SetInt("heights", terrain.heightMap.sampler);
             thickLineShader.SetInt("heights",terrain.heightMap.sampler);
