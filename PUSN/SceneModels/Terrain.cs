@@ -58,6 +58,7 @@ namespace PUSN.SceneModels
         float[,] intHeights;
         public Terrain(Vector2 s, Vector2i r)
         {
+            //r = new Vector2i(r.X + 4, r.Y + 4);
             Size = s; Res = r; ModelMatrix = Matrix4.Identity; Rot = Vector3.Zero;  Scale = Vector3.One;
             //Translation = new Vector3(-s.X / 2, -s.Y / 2, 0);
             Translation = Vector3.Zero;
@@ -104,6 +105,7 @@ namespace PUSN.SceneModels
 
         public void SetNewData(Vector3 Size,Vector2i Res)
         {
+            //Res = new Vector2i(Res.X+4, Res.Y+4);   
             this.Size = Size.Xy; this.Res = Res; ModelMatrix = Matrix4.Identity; Rot = Vector3.Zero; Scale = Vector3.One;
             Translation = Vector3.Zero;
             vertices = new float[1];
@@ -245,6 +247,10 @@ namespace PUSN.SceneModels
             float dx = Size.X / Res.X;
             float dy = Size.Y / Res.Y;
 
+            Size = Size + new Vector2(4*dx, 4*dy);
+            dx = Size.X / Res.X;
+            dy = Size.Y / Res.Y;
+
             float startX = -Size.X / 2;
             float startY = -Size.Y / 2;
 
@@ -260,10 +266,15 @@ namespace PUSN.SceneModels
                     //if(i==(int)Res.X/2) z= 1.0f;
 
                     // jak to jest dolna-górna lub prawa-lewa krawędź (czyli dla i=0, i=ResX, j=0 i j =ResY) to trzeba te wierzchołki wsunać "pod dywan"
-                    if (i == 0) x += dx;
-                    if (i == Res.X) x -= dx;
-                    if (j == 0) y += dy;
-                    if (j == Res.Y) y -= dy;
+                    if (i == 0) x += 2*dx;
+                    if (i == Res.X) x -= 2*dx;
+                    if (j == 0) y += 2*dy;
+                    if (j == Res.Y) y -= 2*dy;
+
+                    if (i == 1) x += dx;
+                    if (i == Res.X-1) x -= dx;
+                    if (j == 1) y += dy;
+                    if (j == Res.Y-1) y -= dy;
 
 
                     vertices.Add(x); vertices.Add(y);vertices.Add(z);

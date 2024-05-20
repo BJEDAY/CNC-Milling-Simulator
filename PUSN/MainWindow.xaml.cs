@@ -110,7 +110,7 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(150, 150), new Vector2i(800, 800));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
             currentRes = terrain.Res;
