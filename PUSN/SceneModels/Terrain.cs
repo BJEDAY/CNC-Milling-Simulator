@@ -265,6 +265,7 @@ namespace PUSN.SceneModels
                     if (j == 0) y += dy;
                     if (j == Res.Y) y -= dy;
 
+
                     vertices.Add(x); vertices.Add(y);vertices.Add(z);
 
                     

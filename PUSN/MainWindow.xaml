@@ -10,7 +10,7 @@
 
     <Window.Resources>
         <Style x:Key="RadiusSlider" TargetType="Slider">
-            <Setter Property="Maximum" Value="10"/>
+            <Setter Property="Maximum" Value="100"/>
             <Setter Property="Minimum" Value="0.01"/>
             <Setter Property="TickPlacement" Value="BottomRight"/>
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
@@ -134,16 +134,18 @@
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Size"/>
                         <TextBox Text="{Binding ElementName=ToolSize, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolSize" Value="0.5"/>
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolSize" Value="7"/>
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Height"/>
                         <TextBox Text="{Binding ElementName=ToolHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="0.5"/>
+                        <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="80"/>
                     </DockPanel>
 
                     <CheckBox Name="FlatCheck" Content="Flat" Margin="5,0,5,0" Click="FlatCheck_Click"/>
+
+                    <Button x:Name="SetTool" Content="Set"  Margin="10,5,10,5" Click="SetTool_Click"/>
                 </StackPanel>
             </GroupBox>
 

@@ -50,6 +50,9 @@ namespace PUSN
             PosNum = this.positions.Count;
             CurrentRadius = r;
             Spherical = s;
+            cutter.spherical = s;
+            cutter.SetRadius(r);
+            cutter.SetPosition(positions[0] + new Vector3(0, 0, CurrentRadius));
         }
 
         public void Start()

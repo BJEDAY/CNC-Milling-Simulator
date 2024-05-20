@@ -40,13 +40,29 @@ void main()
     vec2 l = Texture + vec2(-deltaX,0);
     vec2 r = Texture + vec2(deltaX,0);
     
-    float top = texture2D(heights, t).r;
-    float bottom = texture2D(heights,b).r;
-    float left = texture2D(heights, l).r;
-    float right = texture2D(heights, r).r;
+    float top=0.0f;
+    if(t.y>=1.0f) top = 0.0f;
+    else top = texture2D(heights, t).r;
+    float bottom = 0.0f;
+
+    if(b.y<=0.0f) bottom =0.0f;
+    else bottom = texture2D(heights,b).r;
+
+    float left =0.0f;
+    if(l.x <=0.0f) left =0.0f;
+    else left = texture2D(heights, l).r;
+
+    float right = 0.0f;
+    if(r.x >= 1.0f) right= 0.0f;
+    else right = texture2D(heights, r).r;
 
       
     vec3 norm = normalize(vec3((left-right)/(2*deltaX),(bottom-top)/(2*deltaY),1));
+
+    //if(Texture.x < deltaX) norm = vec3(-1,0,0);
+    //if(Texture.x > (1-deltaX)) norm = vec3(1,0,0);
+    //if(Texture.y < deltaY) norm = vec3(0,-1,0);
+    //if(Texture.y > (1-deltaY)) norm = vec3(0,1,0);
     //vec3 norm = normalize(vec3((right-left)*0.001f,-(bottom-top)*0.0001f,1));
     //vec3 norm = normalize(vec3((right-left)*0.001f+1,-(bottom-top)*0.0001f,0));
 

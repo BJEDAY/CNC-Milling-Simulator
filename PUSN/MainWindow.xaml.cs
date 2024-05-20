@@ -110,7 +110,7 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(150, 150), new Vector2i(20, 20));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(800, 800));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
             currentRes = terrain.Res;
@@ -119,7 +119,8 @@ namespace PUSN
             cutter = new Cutter();
             cutter.SetPosition(new Vector3(-150, -150, 70));
             //cutter.UpdateModelMatrix();
-            cutter.SetRadius(7);
+            cutter.SetHeightRadius(7, 80);
+            //cutter.SetRadius(7);
 
             //sphere = new Sphere();
             //sphere.Translation = new Vector3(15f, 0f, 5f);
@@ -173,11 +174,14 @@ namespace PUSN
             if (type == 0) Spherical = true;
             else Spherical = false;
             simulationController.SetData(pos, r, Spherical);
+            FlatCheck.IsChecked = !Spherical;
+            ToolSize.Value = r;
         }
 
         private void FlatCheck_Click(object sender, RoutedEventArgs e)
         {
             flat = (bool)FlatCheck.IsChecked;
+            cutter.spherical = !flat;
         }
 
         private void SetMaterial_Click(object sender, RoutedEventArgs e)
@@ -196,6 +200,11 @@ namespace PUSN
             terrainShader.Use();
             terrainShader.SetInt("currentResX", currentRes.X);
             terrainShader.SetInt("currentResY", currentRes.Y);
+        }
+
+        private void SetTool_Click(object sender, RoutedEventArgs e)
+        {
+            cutter.SetHeightRadius((float)ToolSize.Value, (float)ToolHeight.Value);
         }
 
         private void ResetMap_Click(object sender, RoutedEventArgs e)

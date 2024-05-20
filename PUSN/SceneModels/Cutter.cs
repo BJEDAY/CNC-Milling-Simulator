@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using OpenTK.Mathematics;
 using OpenTK.Graphics.OpenGL4;
 using PUSN.Shaders;
+using System.Windows.Media.Media3D;
 
 namespace PUSN.SceneModels
 {
@@ -36,16 +37,18 @@ namespace PUSN.SceneModels
         //public int ResY { get; set; }
 
         Sphere sphere;
+        public bool spherical;
         public Cutter()
         {
             sphere = new Sphere();
             sphere.Rot = new Vector3(180, 0, 0);
             sphere.Translation = new Vector3(0,0,0.02f);
             sphere.UpdateModelMatrix();
+            spherical = true;
             ObjectID = 0;
             ObjectName = $"Cutter {ObjectID}";
             Radius = 1.0f;
-            Height = 80.0f;
+            Height = 1.0f;
             ResX = 50;
             //ResY = 36;
             Rot = new Vector3(90, 0, 0);
@@ -62,10 +65,26 @@ namespace PUSN.SceneModels
         public void SetRadius(float radius)
         {
             sphere.Scale = new Vector3(radius, radius, radius);
-            Scale = new Vector3(radius, 1, radius);
+            Scale = new Vector3(radius, Scale.Y, radius);
             UpdateModelMatrix();
         }
 
+        public void SetHeight(float height) 
+        { 
+            Scale = new Vector3(Scale.X, height, Scale.Z);
+            //sphere.Height = height;
+            //UpdateVAO();
+            UpdateModelMatrix();
+        }
+
+        public void SetHeightRadius(float r, float h)
+        {
+            sphere.Scale = new Vector3(r, r, r);
+            Scale = new Vector3(r, h, r);
+            //sphere.Height = h;
+            //UpdateVAO();
+            UpdateModelMatrix();
+        }
         public void SetPosition(Vector3 pos)
         {
             Translation = pos;
@@ -101,11 +120,13 @@ namespace PUSN.SceneModels
         {
             GenerateMesh();
 
+            GL.BindVertexArray(VertexArrayObject);
+
             GL.BindBuffer(BufferTarget.ArrayBuffer, VertexBufferObject);    //nie musimy podpinać znów VAO, bo to VBO jest skojarzone z odpowiednim VAO (chyba)
-            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * sizeof(float), vertices, BufferUsageHint.DynamicCopy);
 
             GL.BindBuffer(BufferTarget.ElementArrayBuffer, ElementBufferObject);
-            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(float), indices, BufferUsageHint.DynamicDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(float), indices, BufferUsageHint.DynamicCopy);
 
             IndicesCount = indices.Length;
         }
@@ -293,7 +314,7 @@ namespace PUSN.SceneModels
             //GL.BindVertexArray(0);
 
             // if spherical draw half of sphere 
-            sphere.Render(shader,View,Perspective,cameraPos,ObjectColor);
+            if(spherical) sphere.Render(shader, View, Perspective, cameraPos, ObjectColor);
         }
     }
 }

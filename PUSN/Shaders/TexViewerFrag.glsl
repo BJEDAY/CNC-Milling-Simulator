@@ -20,8 +20,8 @@ void main()
     float color = texture(texture0,texCoord).r;
     if(edges==1)
     {
-          if(texCoord.x <=(1.0f/ResX) || texCoord.x>=(1.0f - 1.0f/ResX)) color *= 0.001f;
-          else if(texCoord.y <=(1.0f/ResY) || texCoord.y>=(1.0f - 1.0f/ResY)) color *= 0.001f;
+          if(texCoord.x <(1.0f/(ResX+1)) || texCoord.x>(1.0f - 1.0f/(ResX+1))) color *= 0.001f;
+          else if(texCoord.y <(1.0f/ResY) || texCoord.y>(1.0f - 1.0f/ResY)) color *= 0.001f;
           else color = 1.0f;
           gl_FragDepth = color;
     }
