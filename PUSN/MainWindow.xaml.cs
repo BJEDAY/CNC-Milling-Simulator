@@ -48,6 +48,7 @@ namespace PUSN
         Vector2i currentRes;
         bool flat = false;
         bool instant = false;
+        Texture woodTex;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
@@ -127,6 +128,8 @@ namespace PUSN
             //sphere.Translation = new Vector3(15f, 0f, 5f);
             //sphere.UpdateModelMatrix();
             
+
+
         }
 
         private void SetupSim()
@@ -282,6 +285,7 @@ namespace PUSN
 
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth / 4, (int)OpenTkControl.ActualHeight / 4);
             terrain.DrawTextureViewer(texShader);
+            //terrain.DrawWood(texShader);
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);

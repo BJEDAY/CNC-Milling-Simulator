@@ -13,6 +13,7 @@ uniform int currentResX;
 uniform int currentResY;
 
 uniform sampler2D heights;
+uniform sampler2D colorTex;
 
 //in case of this project axis z is for height
 
@@ -79,9 +80,11 @@ void main()
     float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16); //32 = shiness of material
     vec3 specular = specularStrength * spec * lightColor;
 
+    vec4 color = texture(colorTex,Texture);
+
     //ambient test
     //vec3 res = (ambient + diffuse + specular) * objectColor;
-    vec3 res = (ambient + diffuse + specular) * objectColor;
+    vec3 res = (ambient + diffuse + specular) * color.xyz + 0.0001f * objectColor;
     //vec3 res = (ambient) * objectColor;
     FragColor = vec4(res, 1.0f);
 

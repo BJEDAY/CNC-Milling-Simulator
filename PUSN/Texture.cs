@@ -12,6 +12,8 @@ using System.Drawing;
 using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 using OpenTK.Mathematics;
 using System.Windows.Markup;
+using StbImageSharp;
+using System.IO;
 
 namespace PUSN
 {
@@ -19,6 +21,7 @@ namespace PUSN
     {
         public int Handle;
         public TextureUnit Unit;
+        // public int TexUnit; - > ależ to to samo co saaampler
 
         public int sampler { get; set; }
 
@@ -37,6 +40,27 @@ namespace PUSN
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, size, size, 0, PixelFormat.Rgba, PixelType.UnsignedByte, GenerateRandom2DBytes(size));
+        }
+
+        public Texture(int unit, string path)
+        {
+            // "../../../Shaders/terrainFrag.glsl"
+            // string path = "../../../Textures/wood1.jpg";
+            StbImage.stbi_set_flip_vertically_on_load(1);
+            ImageResult image = ImageResult.FromStream(File.OpenRead(path), ColorComponents.RedGreenBlueAlpha);
+
+            Handle = GL.GenTexture();
+            sampler = unit;
+            Unit = TextureUnit.Texture0 + unit;
+            Use();
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Linear);
+
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, image.Width, image.Height, 0, PixelFormat.Rgba, PixelType.UnsignedByte, image.Data);
         }
 
         public Texture(int sizeX,int sizeY, int unit)

@@ -26,5 +26,12 @@ void main()
           gl_FragDepth = color;
     }
     outputColor = vec4(color,0,0,1);
+
+    // just additional badly named option to show all colors of tex
+    if(edges==2)
+    {
+        vec4 color = texture(texture0,texCoord);
+        outputColor = color;
+    }
     //Height = texture(texture0,texCoord).r;
 }

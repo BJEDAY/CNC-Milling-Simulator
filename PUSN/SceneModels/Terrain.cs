@@ -38,6 +38,7 @@ namespace PUSN.SceneModels
         public Texture heightMap;
         private Texture tempMap;    
         private Texture depthMap;
+        private Texture woodTex;
         public TextureViewer TexViewer;
         public ShaderGeometry dot, line;
 
@@ -94,6 +95,9 @@ namespace PUSN.SceneModels
             heightMap = new Texture(heights, 0, Res.X, Res.Y);
             tempMap = new Texture(heights, 0, Res.X, Res.Y);
             depthMap = new Texture(Res,0);
+
+            //woodTex = new Texture(1, "../../../Textures/wood3.jpeg");
+            woodTex = new Texture(1, "../../../Textures/wood1.jpg");
 
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
@@ -352,6 +356,11 @@ namespace PUSN.SceneModels
             //TexViewer.Draw(shader, heightMap);
             TexViewer.Draw(shader, depthMap);
         }
+
+        public void DrawWood(Shader shader)
+        {
+            TexViewer.DrawEdgesNum(shader, woodTex,2);
+        }
         public void UpdateVAO()
         {
             GenerateVerticesNormals();
@@ -378,6 +387,7 @@ namespace PUSN.SceneModels
             shader.Use();
             //int unit = 0;
             heightMap.Use();
+            woodTex.Use();
             shader.SetMatrix4("model", ModelMatrix);
             shader.SetMatrix4("display", DisplayMatrix);
             shader.SetMatrix4("view", View);
@@ -385,6 +395,7 @@ namespace PUSN.SceneModels
             shader.SetVec3("objectColor", ObjectColor);  //uniform vec3 objectColor;
             shader.SetVec3("viewPos", cameraPos);
             shader.SetInt("heights", heightMap.sampler);
+            shader.SetInt("colorTex", woodTex.sampler);
             GL.BindVertexArray(VertexArrayObject);
             GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);    //PrimitiveType.Triangles
             GL.BindVertexArray(0);

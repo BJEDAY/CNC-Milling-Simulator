@@ -117,5 +117,15 @@ namespace PUSN
             GL.BindVertexArray(VAO);
             GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
         }
+
+        public void DrawEdgesNum(Shader shader, Texture tex, int edges)
+        {
+            shader.Use();
+            tex.Use();  //default tex unit is 0
+            shader.SetInt("texture0", (int)tex.sampler);
+            shader.SetInt("edges", edges);
+            GL.BindVertexArray(VAO);
+            GL.DrawElements(PrimitiveType.Triangles, 6, DrawElementsType.UnsignedInt, 0);
+        }
     }
 }
