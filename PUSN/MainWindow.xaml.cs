@@ -47,6 +47,7 @@ namespace PUSN
         float currentH = 0;
         Vector2i currentRes;
         bool flat = false;
+        bool instant = false;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
@@ -110,7 +111,7 @@ namespace PUSN
 
             tool = new MillingTool(new Vector3(-125f, -50f, 0), new Vector3(-30f, 125f, 0), 25f, block_size);
 
-            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1000, 1000));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
+            terrain = new Terrain(new Vector2(150, 150), new Vector2i(1500, 1500));     //dlatego, że size tutaj jest 5 razy mniejszy niż naprawdę (bo tam jest 300) to Radius jest dzielony przez 6 w shaderze
             terrain.CurrentWindowHeight = (int)OpenTkControl.ActualHeight;
             terrain.CurrentWindowWidth = (int)OpenTkControl.ActualWidth;
             currentRes = terrain.Res;
@@ -138,6 +139,7 @@ namespace PUSN
 
             if (simulationController.PosNum > 1)
             {
+                simulationController.Wait = (int)(SimSpeed.Value * 1000);
                 simulationController.Start();
             }
             //simulationController.TestMill();
@@ -207,6 +209,11 @@ namespace PUSN
             cutter.SetHeightRadius((float)ToolSize.Value, (float)ToolHeight.Value);
         }
 
+        private void InstantSimulationButton_Click(object sender, RoutedEventArgs e)
+        {
+            simulationController.instant = true;
+        }
+
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
             terrain.ResetTexture();
@@ -271,14 +278,13 @@ namespace PUSN
             //sphere.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
             //sphere.RenderLines(shader,camera.viewMatrix,camera.projectionMatrix);
             cutter.Render(phongShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, cutterColor);
-            terrain.Render(terrainShader, camera.viewMatrix, camera.projectionMatrix,camera.pos,terrainColor);
+            terrain.Render(terrainShader, camera.viewMatrix, camera.projectionMatrix, camera.pos, terrainColor);
 
-            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth/4, (int)OpenTkControl.ActualHeight/4);
+            GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth / 4, (int)OpenTkControl.ActualHeight / 4);
             terrain.DrawTextureViewer(texShader);
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);
-
             simulationController.Run((float)currentTime);
         }
 

@@ -19,7 +19,7 @@ namespace PUSN
         //MillingTool tool;     //that's already inside Terrain
         Terrain terrain; // reference to terreain object inside MainWindow
         Cutter cutter; // reference to cutter object inside MainWindow (it's a visualization of MillingTool)
-
+        public bool instant;
 
         // Make sure another thread is made later that's gonna call Run() function (so when there is selected 1 second time beetween next two milling points all of the other program like camera or UI is not going to lag)
         ShaderGeometry line, dot;
@@ -38,10 +38,11 @@ namespace PUSN
             cutter = cut;
             line = l;
             dot = d;
-            Wait =  10;
+            Wait =  100;
             run = false;
             pause = false;
             stop = false;
+            instant = false;
         }
 
         public void SetData(List<Vector3> positions, float r, bool s) 
@@ -61,8 +62,8 @@ namespace PUSN
             run = true;
             pause = false;
             stop = false;
-            cutter.SetPosition(positions[0]+new Vector3(0,0,CurrentRadius));
-            cutter.SetRadius(CurrentRadius);
+            cutter.SetPosition(positions[0]+new Vector3(0,0,CurrentRadius/2));
+            cutter.SetRadius(CurrentRadius/2);
         }
 
         public void Stop()
@@ -87,19 +88,39 @@ namespace PUSN
         {
             if(run)
             {
-                TotalMS += currentMS;
-                if(TotalMS >= Wait)
+                if(instant)
                 {
-                    var s = positions[CurrentFrameIndex - 1];
-                    var e = positions[CurrentFrameIndex];
-                    terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
+                    while(instant)
+                    {
+                        var s = positions[CurrentFrameIndex - 1];
+                        var e = positions[CurrentFrameIndex];
+                        terrain.RenderToHeight(s, e, CurrentRadius / 2, dot, line, Spherical);
 
-                    cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));
+                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius / 2));
+                        else cutter.SetPosition(e);
 
-                    CurrentFrameIndex++;
-                    TotalMS = 0;    //TotalMS zbiera czas trwania kolejnych klatek od czasu ostatniego ruchu, gdy ten czas przekroczy czas oczekiwania frezarka robi kolejny ruch i proces się powtarza od poczatku
+                        CurrentFrameIndex++;
+
+                        if(CurrentFrameIndex >= (PosNum)) instant = false;
+                    }
                 }
-                
+                else
+                {
+                    TotalMS += currentMS;
+                    if (TotalMS >= Wait)
+                    {
+                        var s = positions[CurrentFrameIndex - 1];
+                        var e = positions[CurrentFrameIndex];
+                        terrain.RenderToHeight(s, e, CurrentRadius / 2, dot, line, Spherical);
+
+                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius / 2));
+                        else cutter.SetPosition(e);
+
+                        CurrentFrameIndex++;
+                        TotalMS = 0;    //TotalMS zbiera czas trwania kolejnych klatek od czasu ostatniego ruchu, gdy ten czas przekroczy czas oczekiwania frezarka robi kolejny ruch i proces się powtarza od poczatku
+                    }
+                }
+                    
                 // jak tak się stanie to dotarliśmy do końca listy pozycji i się kończy działanie funkcji
                 if (CurrentFrameIndex >= (PosNum))
                 {

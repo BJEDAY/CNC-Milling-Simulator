@@ -17,9 +17,17 @@
             <Setter Property="TickFrequency" Value="0.01"/>
         </Style>
 
+        <Style x:Key="SimSlider" TargetType="Slider">
+            <Setter Property="Maximum" Value="2"/>
+            <Setter Property="Minimum" Value="0.01"/>
+            <Setter Property="TickPlacement" Value="BottomRight"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="0.01"/>
+        </Style>
+
         <Style x:Key="ResSlider" TargetType="Slider">
             <Setter Property="Maximum" Value="3000"/>
-            <Setter Property="Minimum" Value="50"/>
+            <Setter Property="Minimum" Value="20"/>
             <Setter Property="TickPlacement" Value="BottomRight"/>
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
             <Setter Property="TickFrequency" Value="1"/>
@@ -121,10 +129,10 @@
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Speed"/>
                         <TextBox Text="{Binding ElementName=SimSpeed, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource RadiusSlider}" Name="SimSpeed" Value="0.5"/>
+                        <Slider  Style="{StaticResource SimSlider}" Name="SimSpeed" Value="0.5"/>
                     </DockPanel>
                     <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5" Click="StartSimulationButton_Click"/>
-                    <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5"/>
+                    <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5" Click="InstantSimulationButton_Click"/>
                 </StackPanel>
             </GroupBox>
 
