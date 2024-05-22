@@ -133,6 +133,7 @@
                     </DockPanel>
                     <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5" Click="StartSimulationButton_Click"/>
                     <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5" Click="InstantSimulationButton_Click"/>
+                    <Label Content="Error: Undetected" Name="ErrorLabel" Foreground="Green"/>
                 </StackPanel>
             </GroupBox>
 

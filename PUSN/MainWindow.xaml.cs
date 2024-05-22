@@ -48,7 +48,6 @@ namespace PUSN
         Vector2i currentRes;
         bool flat = false;
         bool instant = false;
-        Texture woodTex;
 
         public const string ShaderVertLoc = "../../../Shaders/vert.glsl";
         //public const string ShaderFragLoc = "Shaders/frag.hlsl";  //Properties -> Copy if newer
@@ -103,6 +102,7 @@ namespace PUSN
             GL.DepthFunc(DepthFunction.Less);
         }
 
+
         private void SetupObjects()
         {
             var cylinderek = new Cylinder();
@@ -136,6 +136,8 @@ namespace PUSN
         {
             simulationController = new SimulationController(ref terrain, ref cutter, thickLineShader, dotShader);
             terrain.ResetTexture();
+            simulationController.valTex = terrain.valTex;
+            simulationController.ErrorLabel = ErrorLabel;
         }
         private void StartSimulationButton_Click(object sender, RoutedEventArgs e)
         {
@@ -143,7 +145,7 @@ namespace PUSN
             if (simulationController.PosNum > 1)
             {
                 simulationController.Wait = (int)(SimSpeed.Value * 1000);
-                simulationController.Start();
+                simulationController.Start();               
             }
             //simulationController.TestMill();
             //terrain.RenderToHeight(new Vector3(-120, -120, 34), new Vector3(-120, 120, 34), 16, dotShader, thickLineShader, true); 
@@ -178,6 +180,7 @@ namespace PUSN
             bool Spherical;
             if (type == 0) Spherical = true;
             else Spherical = false;
+            r /= 2;
             simulationController.SetData(pos, r, Spherical);
             FlatCheck.IsChecked = !Spherical;
             ToolSize.Value = r;

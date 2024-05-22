@@ -7,6 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using OpenTK.Graphics.OpenGL4;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
 namespace PUSN
 {
@@ -20,6 +25,8 @@ namespace PUSN
         Terrain terrain; // reference to terreain object inside MainWindow
         Cutter cutter; // reference to cutter object inside MainWindow (it's a visualization of MillingTool)
         public bool instant;
+        public Texture valTex;
+        public Label ErrorLabel;
 
         // Make sure another thread is made later that's gonna call Run() function (so when there is selected 1 second time beetween next two milling points all of the other program like camera or UI is not going to lag)
         ShaderGeometry line, dot;
@@ -62,8 +69,8 @@ namespace PUSN
             run = true;
             pause = false;
             stop = false;
-            cutter.SetPosition(positions[0]+new Vector3(0,0,CurrentRadius/2));
-            cutter.SetRadius(CurrentRadius/2);
+            cutter.SetPosition(positions[0]+new Vector3(0,0,CurrentRadius));
+            cutter.SetRadius(CurrentRadius);
         }
 
         public void Stop()
@@ -94,9 +101,9 @@ namespace PUSN
                     {
                         var s = positions[CurrentFrameIndex - 1];
                         var e = positions[CurrentFrameIndex];
-                        terrain.RenderToHeight(s, e, CurrentRadius / 2, dot, line, Spherical);
+                        terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
 
-                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius / 2));
+                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));
                         else cutter.SetPosition(e);
 
                         CurrentFrameIndex++;
@@ -111,9 +118,9 @@ namespace PUSN
                     {
                         var s = positions[CurrentFrameIndex - 1];
                         var e = positions[CurrentFrameIndex];
-                        terrain.RenderToHeight(s, e, CurrentRadius / 2, dot, line, Spherical);
+                        terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
 
-                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius / 2));
+                        if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));
                         else cutter.SetPosition(e);
 
                         CurrentFrameIndex++;
@@ -126,6 +133,18 @@ namespace PUSN
                 {
                     run = false;
                     CurrentFrameIndex = 1;
+
+                    GL.BindTexture(TextureTarget.Texture2D, valTex.Handle);
+                    Vector4h[] pixels = new Vector4h[1*1];
+                    GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.HalfFloat, pixels);
+                    if (pixels[0].X > 0.0f)
+                    {
+                        ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                        ErrorLabel.Content = "Error: Detected 1!"; 
+                    }
+                        
+                    //if (pixels[0].Y > 0.0f) MessageBox.Show("Error 2");
+                    //if (pixels[0].Z > 0.0f) MessageBox.Show("Error 3");
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿#version 400 core
+﻿#version 420 core
 //out vec4 FragColor;
 out float Height;
 //out vec4 res;
@@ -14,6 +14,10 @@ uniform float Radius;
 uniform mat4 transform;
 uniform int Spherical;    //if tool shape is Sphere then Spherical =1 else Spherical =0 
 uniform sampler2D heights;
+uniform sampler2D valTex;
+//uniform int TestingInt;
+
+layout(rgba32f,binding=2) uniform image2D valImage;
 
 vec2 GetTexPos(vec2 screen)
 {
@@ -22,14 +26,22 @@ vec2 GetTexPos(vec2 screen)
 
 
 void main()
-{
-    
+{          
+
     float check = pow(frag_in.TexCoord.x, 2) + pow(frag_in.TexCoord.y, 2);  // geometry shader draws square and then fragment shader selects pixels that makes perfect circle
 
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelXYZ.xy)).r;
 
+    vec4 valCheck = texture2D(valTex,vec2(0,0));
+    if(valCheck == vec4(0,0,0,0))
+    {
+        imageStore(valImage,ivec2(0,0),vec4(0.7f,0.21f,1.2f,1.7f));
+    }
+    //if(TestingInt == 2) discard;
+
     if (1 - check<0) 
     { // If it's not affected by current position of tool leave current h
+        // just testing       
         discard;
     }
     else

@@ -14,6 +14,7 @@ using OpenTK.Mathematics;
 using System.Windows.Markup;
 using StbImageSharp;
 using System.IO;
+using System.Windows;
 
 namespace PUSN
 {
@@ -40,6 +41,34 @@ namespace PUSN
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, size, size, 0, PixelFormat.Rgba, PixelType.UnsignedByte, GenerateRandom2DBytes(size));
+        }
+
+        public Texture(int unit, bool Simple1DTex)
+        {
+            Handle = GL.GenTexture();
+            sampler = unit;
+            Unit = TextureUnit.Texture0 + unit;
+            Use();
+            if(Simple1DTex)
+            {
+                GL.TexParameter(TextureTarget.Texture1D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+                GL.TexParameter(TextureTarget.Texture1D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Nearest);
+
+                GL.TexParameter(TextureTarget.Texture1D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture1D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+                GL.TexImage1D(TextureTarget.Texture1D, 0, PixelInternalFormat.Rgba32f, 1, 0, PixelFormat.Rgba, PixelType.UnsignedByte, System.IntPtr.Zero);
+            }
+            else
+            {
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Nearest);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMinFilter.Nearest);
+
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToEdge);
+                GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToEdge);
+
+                GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, 1, 1,0, PixelFormat.Rgba, PixelType.UnsignedByte, System.IntPtr.Zero);
+            }
         }
 
         public Texture(int unit, string path)
@@ -159,6 +188,7 @@ namespace PUSN
 
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapS, (int)TextureWrapMode.ClampToBorder);
             GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureWrapT, (int)TextureWrapMode.ClampToBorder);
+
         }
 
         public void UpdateDepthData(int ResX, int ResY)
@@ -208,6 +238,12 @@ namespace PUSN
             GL.ActiveTexture(Unit);
             //GL.BindSampler((int)(Unit), sampler);
             GL.BindTexture(TextureTarget.Texture2D, Handle);
+        }
+
+        public void Use1D()
+        {
+            GL.ActiveTexture(Unit);
+            GL.BindTexture(TextureTarget.Texture1D, Handle);
         }
 
         public void ChangeUnit(TextureUnit unit)

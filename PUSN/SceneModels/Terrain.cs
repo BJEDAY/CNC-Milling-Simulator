@@ -39,6 +39,7 @@ namespace PUSN.SceneModels
         private Texture tempMap;    
         private Texture depthMap;
         private Texture woodTex;
+        public Texture valTex;
         public TextureViewer TexViewer;
         public ShaderGeometry dot, line;
 
@@ -99,12 +100,16 @@ namespace PUSN.SceneModels
             //woodTex = new Texture(1, "../../../Textures/wood3.jpeg");
             woodTex = new Texture(1, "../../../Textures/wood1.jpg");
 
+            //valTex = new Texture(2, true);
+            valTex = new Texture(2, false);
+
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateFramebuffer();
             GenerateVAO();
             UpdateModelMatrix();
+            SetupValidationTextureImage();
         }
 
         public void SetNewData(Vector3 Size,Vector2i Res)
@@ -203,6 +208,7 @@ namespace PUSN.SceneModels
             GL.DepthFunc(DepthFunction.Less);
             //GL.DepthFunc(DepthFunction.Always);
             tool.Spherical = Spherical;
+            //SetupValidationTextureImage();
             tool.Draw(geo, line);
             GL.DepthFunc(DepthFunction.Less);
             // Step 2: Render Temp texture to Height texture
@@ -233,6 +239,22 @@ namespace PUSN.SceneModels
             GL.BindFramebuffer(FramebufferTarget.Framebuffer, 0);
             GL.Viewport(0, 0, (int)CurrentWindowWidth, (int)CurrentWindowHeight);
         }
+
+        private void SetupValidationTextureImage()
+        {
+            // 1 - make texture object
+            // 2 - BindImageTexture to that object
+            // 3 - inside shader get it from - layout(pixel type, binding = num) uniform image1D validationTexImage;
+            // 4 - store data inside it with - imageStore(validationTexImage, texCoord, value);
+
+            //valTex made in constructor of terrain
+            GL.BindImageTexture(2, valTex.Handle, 0, true, 0, TextureAccess.ReadWrite, SizedInternalFormat.Rgba32f);
+            //valTex.Use1D();
+            valTex.Use();
+            GL.MemoryBarrier(MemoryBarrierFlags.ShaderImageAccessBarrierBit);
+            //GL.MemoryBarrier(MemoryBarrierFlags.TextureUpdateBarrierBit);
+        }
+
         public void UpdateParameters(Vector2 s, Vector2i r)
         {
             Size = s; Res = r;
