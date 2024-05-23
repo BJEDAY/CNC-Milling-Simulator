@@ -18,6 +18,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using PixelFormat = OpenTK.Graphics.OpenGL4.PixelFormat;
 
 namespace PUSN
 {
@@ -212,12 +213,42 @@ namespace PUSN
             terrainShader.Use();
             terrainShader.SetInt("currentResX", currentRes.X);
             terrainShader.SetInt("currentResY", currentRes.Y);
+            
         }
 
         private void SetTool_Click(object sender, RoutedEventArgs e)
         {
             cutter.SetHeightRadius((float)ToolSize.Value, (float)ToolHeight.Value);
         }
+
+        private void DefHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (terrain == null) return;
+            terrain.tool.MinHeight = (float)DefHeight.Value;
+        }
+
+        private void CutterHeight_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (terrain == null) return;
+            terrain.tool.CuttingPartHeight = (float)CutterHeight.Value;
+        }
+
+        //private void ResetValidation_Click(object sender, RoutedEventArgs e)
+        //{
+        //    // check value before reset
+        //    //Vector4h[] pixels = new Vector4h[1 * 1];
+        //    //GL.BindTexture(TextureTarget.Texture2D, terrain.valTex.Handle);
+        //    //GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.HalfFloat, pixels);
+
+        //    terrain.valTex.ResetValidationTex(); 
+        //    //terrain.SetupValidationTextureImage();
+        //    ErrorLabel.Foreground = new SolidColorBrush(Colors.Green);
+        //    ErrorLabel.Content = "Error: Undetected";
+
+        //    // check value after reset
+        //    //GL.BindTexture(TextureTarget.Texture2D, terrain.valTex.Handle);
+        //    //GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.HalfFloat, pixels);
+        //}
 
         private void InstantSimulationButton_Click(object sender, RoutedEventArgs e)
         {
@@ -226,6 +257,10 @@ namespace PUSN
 
         private void ResetMap_Click(object sender, RoutedEventArgs e)
         {
+            terrain.valTex.ResetValidationTex();
+            ErrorLabel.Foreground = new SolidColorBrush(Colors.Green);
+            ErrorLabel.Content = "Error: Undetected";
+            cutter.SetPosition(new Vector3(0, 0, 70));
             terrain.ResetTexture();
         }
 

@@ -283,6 +283,14 @@ namespace PUSN
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgb, data.GetLength(0), data.GetLength(1), 0, PixelFormat.Rgb, PixelType.Float, data);
         }
 
+        public void ResetValidationTex()
+        {
+            //GL.ActiveTexture(Unit);
+            //GL.BindTexture(TextureTarget.Texture2D, Handle);
+            Use();
+            float[] zero = { 0.0f, 0.0f, 0.0f, 0.0f };
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba32f, 1, 1, 0, PixelFormat.Rgba, PixelType.UnsignedByte, zero);
+        }
         public void Dispose()
         {
             GL.DeleteTexture(Handle);

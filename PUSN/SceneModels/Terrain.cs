@@ -52,7 +52,7 @@ namespace PUSN.SceneModels
         // Now when rendering at the same time to heightmap and reading values from it it can create some problems
         // It could be from that the heightmap is updated every frame, so when in one frame two operation on heightmap are performed heightmap don't have info about last line changes or dot
 
-        MillingTool tool;
+        public MillingTool tool;
 
         int FrameBufferHandle, FrameBufferHandle2;  // jedna robi render do Temp z uwzględnieniem Depth, a druga robi render do Height 
 
@@ -240,7 +240,7 @@ namespace PUSN.SceneModels
             GL.Viewport(0, 0, (int)CurrentWindowWidth, (int)CurrentWindowHeight);
         }
 
-        private void SetupValidationTextureImage()
+        public void SetupValidationTextureImage()
         {
             // 1 - make texture object
             // 2 - BindImageTexture to that object

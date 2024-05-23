@@ -125,11 +125,16 @@ namespace PUSN
 
                         CurrentFrameIndex++;
                         TotalMS = 0;    //TotalMS zbiera czas trwania kolejnych klatek od czasu ostatniego ruchu, gdy ten czas przekroczy czas oczekiwania frezarka robi kolejny ruch i proces się powtarza od poczatku
+
+                        GL.BindTexture(TextureTarget.Texture2D, valTex.Handle);
+                        Vector4h[] pixels = new Vector4h[1 * 1];
+                        GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.HalfFloat, pixels);
+                        if (pixels[0] != new Vector4h(0, 0, 0, 0)) run = false;
                     }
                 }
                     
                 // jak tak się stanie to dotarliśmy do końca listy pozycji i się kończy działanie funkcji
-                if (CurrentFrameIndex >= (PosNum))
+                if (CurrentFrameIndex >= (PosNum) || run == false)
                 {
                     run = false;
                     CurrentFrameIndex = 1;
@@ -140,9 +145,20 @@ namespace PUSN
                     if (pixels[0].X > 0.0f)
                     {
                         ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
-                        ErrorLabel.Content = "Error: Detected 1!"; 
+                        ErrorLabel.Content = "Error: Flat Vertical"; 
                     }
-                        
+
+                    if (pixels[0].Y > 0.0f)
+                    {
+                        ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                        ErrorLabel.Content = "Error: Non-Cutting Part";
+                    }
+                    if (pixels[0].Z > 0.0f)
+                    {
+                        ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                        ErrorLabel.Content = "Error: Minimum Height";
+                    }
+
                     //if (pixels[0].Y > 0.0f) MessageBox.Show("Error 2");
                     //if (pixels[0].Z > 0.0f) MessageBox.Show("Error 3");
                 }

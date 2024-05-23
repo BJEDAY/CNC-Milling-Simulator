@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PUSN"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1300" Width="1500" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="1300" Width="1600" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="RadiusSlider" TargetType="Slider">
@@ -41,6 +41,14 @@
             <Setter Property="TickFrequency" Value="1"/>
         </Style>
 
+        <Style x:Key="HeightSlider" TargetType="Slider">
+            <Setter Property="Maximum" Value="50"/>
+            <Setter Property="Minimum" Value="1"/>
+            <Setter Property="TickPlacement" Value="BottomRight"/>
+            <Setter Property="IsSnapToTickEnabled" Value="True"/>
+            <Setter Property="TickFrequency" Value="1"/>
+        </Style>
+
         <Style x:Key="TextboxStyle" TargetType="TextBox">
             <Setter Property="DockPanel.Dock" Value="Right"/>
             <Setter Property="TextAlignment" Value="Right"/>
@@ -60,7 +68,7 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0.5*" />
             <ColumnDefinition Width="25*" />
-            <ColumnDefinition Width="4.5*" />
+            <ColumnDefinition Width="5.5*" />
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
@@ -114,9 +122,14 @@
                     </DockPanel>
 
                     <DockPanel VerticalAlignment="Center" Margin="5">
-                        <Label Content="Default Height [cm]"/>
+                        <Label Content="Minimum Height [cm]"/>
                         <TextBox Text="{Binding ElementName=DefHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource SizeSlider}" Name="DefHeight" Value="0.5"/>
+                        <Slider  Style="{StaticResource HeightSlider}" Name="DefHeight" Value="0.5" ValueChanged="DefHeight_ValueChanged"/>
+                    </DockPanel>
+                    <DockPanel VerticalAlignment="Center" Margin="5">
+                        <Label Content="Cutting Part Height [cm]"/>
+                        <TextBox Text="{Binding ElementName=CutterHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
+                        <Slider  Style="{StaticResource HeightSlider}" Name="CutterHeight" Value="0.5" ValueChanged="CutterHeight_ValueChanged"/>
                     </DockPanel>
                     <Button x:Name="SetMaterial" Content="Set"  Margin="10,5,10,5" Click="SetMaterial_Click"/>
 
@@ -152,7 +165,7 @@
                         <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="80"/>
                     </DockPanel>
 
-                    <CheckBox Name="FlatCheck" Content="Flat" Margin="5,0,5,0" Click="FlatCheck_Click"/>
+                    <CheckBox Name="FlatCheck" Content="Flat" Margin="10,2,5,2" Click="FlatCheck_Click"/>
 
                     <Button x:Name="SetTool" Content="Set"  Margin="10,5,10,5" Click="SetTool_Click"/>
                 </StackPanel>

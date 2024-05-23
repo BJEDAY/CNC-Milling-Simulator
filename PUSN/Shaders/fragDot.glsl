@@ -15,6 +15,10 @@ uniform mat4 transform;
 uniform int Spherical;    //if tool shape is Sphere then Spherical =1 else Spherical =0 
 uniform sampler2D heights;
 uniform sampler2D valTex;
+
+// żeby to miało sens to MinHeight i TollCuttingHeight muszą być wyrażone w NDC - czyli jak kostka ma wysokość 50, a MinHeight to 25 to tutaj powinno być ustawione na 0.5
+uniform float MinHeight;
+uniform float ToolCuttingHeight;
 //uniform int TestingInt;
 
 layout(rgba32f,binding=2) uniform image2D valImage;
@@ -32,10 +36,12 @@ void main()
 
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelXYZ.xy)).r;
 
+    // czyli jak był błąd to niech nie frezuje dalej
     vec4 valCheck = texture2D(valTex,vec2(0,0));
-    if(valCheck == vec4(0,0,0,0))
+    if(valCheck != vec4(0,0,0,0))
     {
-        imageStore(valImage,ivec2(0,0),vec4(0.7f,0.21f,1.2f,1.7f));
+        //imageStore(valImage,ivec2(0,0),vec4(0.0f,0.0f,0.0f,0.0f));
+        discard;
     }
     //if(TestingInt == 2) discard;
 
@@ -51,15 +57,26 @@ void main()
         float r = (vec4(0, 0, Radius, 0) * transform).z*2;
 
         float z =  frag_in.ModelXYZ.z*2 +(Spherical * (1-deltaZ)*r);  
-           
-        // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
-        if(currentH == 10000)
-        {
-            discard;
-        }
-        
+                  
         Height = z;
         gl_FragDepth = z;     
+
+        //Validation check
+        // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
+        float decrease = currentH-z;
+
+        if(Spherical==0 && decrease>0)
+        {
+            imageStore(valImage,ivec2(0,0),vec4(1.0f,0.0f,0.0f,0.0f));
+        }
+        if(decrease>ToolCuttingHeight)
+        {
+            imageStore(valImage,ivec2(0,0),vec4(0.0f,1.0f,0.0f,0.0f));
+        }
+        if(z<MinHeight)
+        {
+            imageStore(valImage,ivec2(0,0),vec4(0.0f,0.0f,1.0f,0.0f));
+        }
     }
 }
 
