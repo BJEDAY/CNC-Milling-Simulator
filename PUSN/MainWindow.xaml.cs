@@ -171,6 +171,10 @@ namespace PUSN
             float r = 10f;
             if (!float.TryParse(Radius.Text, out r)) { Console.WriteLine("Wrong radius!"); }
             RenderToTexture(start, end, r);
+
+            cutter.SetPosition(end+new Vector3(0,0,r));
+            cutter.SetRadius(r);
+            ToolSize.Value = r;
             //RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
         }
 
