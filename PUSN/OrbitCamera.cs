@@ -16,7 +16,8 @@ namespace PUSN
         float aspect, dist, angleX, angleY;
         public OrbitCamera()
         {
-            dist = 3;
+            lookAt = new Vector3(0,0,0);
+            dist = 25;
             aspect = 1;
             UpdateView();
             UpdateProj(1);
@@ -46,7 +47,7 @@ namespace PUSN
         }
         public void UpdateView()
         {
-            var Eye = new Vector4(0, dist, 0, 1) * Matrix4.CreateRotationX(angleX) * Matrix4.CreateRotationZ(-angleY); //*Matrix4.CreateTranslation(lookAt);
+            var Eye = new Vector4(0, dist, 0, 1) * Matrix4.CreateRotationX(angleX) * Matrix4.CreateRotationZ(-angleY)*Matrix4.CreateTranslation(lookAt);
             var LookAt = new Vector4(lookAt, 1);
             var Up = new Vector4(0, 0, 1, 0);
             pos = Eye.Xyz;
@@ -57,6 +58,27 @@ namespace PUSN
         {
             this.aspect = aspect;
             projectionMatrix = Matrix4.CreatePerspectiveFieldOfView(MathHelper.DegreesToRadians(60), aspect, 0.01f, 800.0f);
+        }
+
+        public void Move(char c)
+        {
+            if(c=='w')
+            {
+                lookAt.X += 2.5f;
+            }
+            if(c=='s')
+            {
+                lookAt.X -= 2.5f;
+            }
+            if (c == 'a')
+            {
+                lookAt.Y += 2.5f;
+            }
+            if (c == 'd')
+            {
+                lookAt.Y -= 2.5f;
+            }
+            UpdateView();
         }
     }
 }

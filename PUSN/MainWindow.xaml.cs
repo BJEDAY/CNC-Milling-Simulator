@@ -380,18 +380,22 @@ namespace PUSN
             if (e.Key == Key.W)
             {
                 //camera.MoveCamera('W');
+                camera.Move('w');
             }
             if (e.Key == Key.S)
             {
                 //camera.MoveCamera('S');
+                camera.Move('s');
             }
             if (e.Key == Key.A)
             {
                 //camera.MoveCamera('A');
+                camera.Move('a');
             }
             if (e.Key == Key.D)
             {
                 //camera.MoveCamera('D');
+                camera.Move('d');
             }
             //if(e.Key == Key.E)
             //{
