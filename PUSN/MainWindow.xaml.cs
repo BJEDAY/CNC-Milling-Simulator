@@ -36,7 +36,7 @@ namespace PUSN
         OrbitCamera camera;
         Shader shader, phongShader, terrainShader, texShader;
         ShaderGeometry thickLineShader, dotShader;
-        Vector3 block_size, lightPos, lightColor, terrainColor, cutterColor;
+        Vector3 block_size, lightPos, lightPos2, lightColor, terrainColor, cutterColor;
         ViewPerspectiveSettings perspectiveSettings;
         System.Windows.Point prev_mouse;
         MillingTool tool;
@@ -238,7 +238,8 @@ namespace PUSN
         {
             //Initialize light parameters
             lightColor = new Vector3(1f, 1f, 1f);
-            lightPos = new Vector3(-150, -200, 170);
+            lightPos = new Vector3(-150, -200, 200);
+            lightPos2 = new Vector3(150, 200, 200);
             //terrainColor = new Vector3(0.52f, 0.33f, 0.02f);
             terrainColor = new Vector3(0.32f, 0.55f, 0.52f);
             cutterColor = new Vector3(0.2f, 0.9f, 0.7f);
@@ -267,6 +268,7 @@ namespace PUSN
 
             terrainShader.Use();
             terrainShader.SetVec3("lightPos", lightPos);
+            terrainShader.SetVec3("lightPos2", lightPos2);
             terrainShader.SetVec3("lightColor", lightColor);
             terrainShader.SetInt("currentResX", currentRes.X);
             terrainShader.SetInt("currentResY", currentRes.Y);

@@ -6,7 +6,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PUSN"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1300" Width="1800" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
+        Title="MainWindow" Height="1300" Width="1500" SizeChanged="Window_SizeChanged" WindowStartupLocation="CenterScreen">
 
     <Window.Resources>
         <Style x:Key="RadiusSlider" TargetType="Slider">
@@ -27,7 +27,7 @@
 
         <Style x:Key="ResSlider" TargetType="Slider">
             <Setter Property="Maximum" Value="3000"/>
-            <Setter Property="Minimum" Value="20"/>
+            <Setter Property="Minimum" Value="300"/>
             <Setter Property="TickPlacement" Value="BottomRight"/>
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
             <Setter Property="TickFrequency" Value="1"/>
@@ -58,14 +58,14 @@
 
     <Grid Background="LightGray">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="4*" />
-            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.5*" />
+            <ColumnDefinition Width="25*" />
+            <ColumnDefinition Width="4.5*" />
         </Grid.ColumnDefinitions>
         
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
-            <RowDefinition Height="8*" />
+            <RowDefinition Height="17*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
         

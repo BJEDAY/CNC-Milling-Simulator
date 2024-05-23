@@ -17,14 +17,18 @@ out vec2 Texture;
 
 void main()
 {
-    FragPos = vec3(vec4(aPosition, 1.0) * model);
+    float h = texture2D(heights, texCoord).r;
+    h = (vec4(0,0,h,1.0) * display).z;
+
+    FragPos = vec3(vec4(aPosition.xy,h, 1.0) * model);
+    //FragPos = vec3(vec4(aPosition, 1.0) * model);
     Normal = aNormal * mat3(transpose(inverse(model)));
     Texture = texCoord;
 
-    float h = texture2D(heights, texCoord).r;
+    
     //if(texCoord.x == 0 || texCoord.x == 1 || texCoord.y ==0 || texCoord.y == 1) h =(vec4(0,0,0.0f,1.0) * display).z;
     //else 
-    h = (vec4(0,0,h,1.0) * display).z;
+    
     //if (h < 1) aPosition = vec3(0, 0, 0);
     //if (h = 0) FragPos.Z = 0.0f;
     //FragPos.z = h;
