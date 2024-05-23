@@ -101,6 +101,12 @@ namespace PUSN
                     {
                         var s = positions[CurrentFrameIndex - 1];
                         var e = positions[CurrentFrameIndex];
+
+                        if (s.Z - e.Z > 0)
+                            terrain.tool.moveDown = true;
+                        else 
+                            terrain.tool.moveDown = false;
+
                         terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
 
                         if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));
@@ -118,6 +124,12 @@ namespace PUSN
                     {
                         var s = positions[CurrentFrameIndex - 1];
                         var e = positions[CurrentFrameIndex];
+
+                        if (s.Z - e.Z > 0)
+                            terrain.tool.moveDown = true;
+                        else 
+                            terrain.tool.moveDown = false;
+
                         terrain.RenderToHeight(s, e, CurrentRadius, dot, line, Spherical);
 
                         if (cutter.spherical) cutter.SetPosition(e + new Vector3(0, 0, CurrentRadius));

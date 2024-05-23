@@ -19,6 +19,7 @@ uniform sampler2D valTex;
 // żeby to miało sens to MinHeight i TollCuttingHeight muszą być wyrażone w NDC - czyli jak kostka ma wysokość 50, a MinHeight to 25 to tutaj powinno być ustawione na 0.5
 uniform float MinHeight;
 uniform float ToolCuttingHeight;
+uniform int moveDown;
 //uniform int TestingInt;
 
 layout(rgba32f,binding=2) uniform image2D valImage;
@@ -65,7 +66,7 @@ void main()
         // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
         float decrease = currentH-z;
 
-        if(Spherical==0 && decrease>0)
+        if(Spherical==0 && decrease>0 && moveDown==1)
         {
             imageStore(valImage,ivec2(0,0),vec4(1.0f,0.0f,0.0f,0.0f));
         }

@@ -21,6 +21,7 @@ namespace PUSN.SceneModels
         public int Sampler;
         public int ValTexSampler;
         public float MinHeight, CuttingPartHeight;
+        public bool moveDown;
         public MillingTool(Vector3 start, Vector3 end, float r, Vector3 blockSize)
         {
             s = new SceneModels.Dot(start, r);
@@ -56,6 +57,8 @@ namespace PUSN.SceneModels
             lineShader.SetInt("valTex", ValTexSampler);
             lineShader.SetFloat("MinHeight", MinHeight / blockSize.Z);
             lineShader.SetFloat("ToolCuttingHeight", CuttingPartHeight / blockSize.Z);
+            if (moveDown) lineShader.SetInt("moveDown", 1);
+            else lineShader.SetInt("moveDown", 0);
             line.Draw(lineShader);
 
             dotShader.Use();
@@ -66,6 +69,8 @@ namespace PUSN.SceneModels
             dotShader.SetFloat("MinHeight", MinHeight/blockSize.Z);
             dotShader.SetFloat("ToolCuttingHeight", CuttingPartHeight/blockSize.Z);
             //dotShader.SetInt("TestingInt", ValTexSampler);
+            if (moveDown) dotShader.SetInt("moveDown", 1);
+            else dotShader.SetInt("moveDown", 0);
             s.Draw(dotShader);
             e.Draw(dotShader);
         }

@@ -304,6 +304,7 @@ namespace PUSN
             phongShader.Use();
             phongShader.SetVec3("lightPos", lightPos);            //uniform vec3 lightPos;
             phongShader.SetVec3("lightColor", lightColor);        //uniform vec3 lightColor;
+            phongShader.SetVec3("lightPos2", lightPos2);
 
             terrainShader.Use();
             terrainShader.SetVec3("lightPos", lightPos);

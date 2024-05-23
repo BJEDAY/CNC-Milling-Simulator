@@ -18,6 +18,7 @@ uniform sampler2D heights;
 uniform sampler2D valTex;
 uniform float MinHeight;
 uniform float ToolCuttingHeight;
+uniform int moveDown;
 
 layout(rgba32f,binding=2) uniform image2D valImage;
 
@@ -49,7 +50,7 @@ void main()
     // potem wartośc currentH będzie tożsama z wysokością z poprzedniej klatki i będzie użyta do walidacji czy np płaski frez nie schodzi pionowo w dół
     float decrease = currentH-z;
 
-    if(Spherical==0 && decrease>0)
+    if(Spherical==0 && decrease>0 && moveDown==1)
     {
         imageStore(valImage,ivec2(0,0),vec4(1.0f,0.0f,0.0f,0.0f));
     }

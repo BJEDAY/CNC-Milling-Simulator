@@ -124,12 +124,12 @@
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Minimum Height [cm]"/>
                         <TextBox Text="{Binding ElementName=DefHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource HeightSlider}" Name="DefHeight" Value="0.5" ValueChanged="DefHeight_ValueChanged"/>
+                        <Slider  Style="{StaticResource HeightSlider}" Name="DefHeight" Value="10.0" ValueChanged="DefHeight_ValueChanged"/>
                     </DockPanel>
                     <DockPanel VerticalAlignment="Center" Margin="5">
                         <Label Content="Cutting Part Height [cm]"/>
                         <TextBox Text="{Binding ElementName=CutterHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
-                        <Slider  Style="{StaticResource HeightSlider}" Name="CutterHeight" Value="0.5" ValueChanged="CutterHeight_ValueChanged"/>
+                        <Slider  Style="{StaticResource HeightSlider}" Name="CutterHeight" Value="40.0" ValueChanged="CutterHeight_ValueChanged"/>
                     </DockPanel>
                     <Button x:Name="SetMaterial" Content="Set"  Margin="10,5,10,5" Click="SetMaterial_Click"/>
 
