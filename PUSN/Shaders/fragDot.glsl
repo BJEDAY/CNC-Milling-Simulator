@@ -58,6 +58,8 @@ void main()
         float r = (vec4(0, 0, Radius, 0) * transform).z*2;
 
         float z =  frag_in.ModelXYZ.z*2 +(Spherical * (1-deltaZ)*r);  
+
+        //z = clamp(z,0,1);
                   
         Height = z;
         gl_FragDepth = z;     

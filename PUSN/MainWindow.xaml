@@ -43,7 +43,7 @@
 
         <Style x:Key="HeightSlider" TargetType="Slider">
             <Setter Property="Maximum" Value="50"/>
-            <Setter Property="Minimum" Value="1"/>
+            <Setter Property="Minimum" Value="-10"/>
             <Setter Property="TickPlacement" Value="BottomRight"/>
             <Setter Property="IsSnapToTickEnabled" Value="True"/>
             <Setter Property="TickFrequency" Value="1"/>

@@ -173,10 +173,36 @@ namespace PUSN
             if (!float.TryParse(Radius.Text, out r)) { Console.WriteLine("Wrong radius!"); }
             RenderToTexture(start, end, r);
 
+            CheckValidation();
+
             cutter.SetPosition(end+new Vector3(0,0,r));
             cutter.SetRadius(r);
             ToolSize.Value = r;
             //RenderToTexture(new Vector3(0f, -170f, 0f), new Vector3(0f, 160f, 15f), 18f);
+        }
+
+        private void CheckValidation()
+        {
+            // check for errors
+            GL.BindTexture(TextureTarget.Texture2D, simulationController.valTex.Handle);
+            Vector4h[] pixels = new Vector4h[1 * 1];
+            GL.GetTexImage(TextureTarget.Texture2D, 0, PixelFormat.Rgba, PixelType.HalfFloat, pixels);
+            if (pixels[0].X > 0.0f)
+            {
+                ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                ErrorLabel.Content = "Error: Flat Vertical";
+            }
+
+            if (pixels[0].Y > 0.0f)
+            {
+                ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                ErrorLabel.Content = "Error: Non-Cutting Part";
+            }
+            if (pixels[0].Z > 0.0f)
+            {
+                ErrorLabel.Foreground = new SolidColorBrush(Colors.Red);
+                ErrorLabel.Content = "Error: Minimum Height";
+            }
         }
 
         private void OpenFileButton_Click(object sender, RoutedEventArgs e)

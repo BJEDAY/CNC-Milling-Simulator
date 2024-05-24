@@ -41,7 +41,7 @@ void main()
     float r = (vec4(0, 0, Radius, 0) * transform).z * 2;
     float z  = frag_in.ModelCoord.z*2 - r *(deltaZ-1) * Spherical;
     float currentH = texture2D(heights,GetTexPos(frag_in.ModelCoord.xy)).r;
-
+    //z = clamp(z,0,1);
     gl_FragDepth = z; 
 
     Height = z;
