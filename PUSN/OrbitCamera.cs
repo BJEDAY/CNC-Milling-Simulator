@@ -14,11 +14,13 @@ namespace PUSN
         Vector3 lookAt;
         public Vector3 pos;
         float aspect, dist, angleX, angleY;
+        float moveSpeed;
         public OrbitCamera()
         {
             lookAt = new Vector3(0,0,0);
             dist = 25;
             aspect = 1;
+            moveSpeed = 1.5f;
             UpdateView();
             UpdateProj(1);
         }
@@ -62,21 +64,26 @@ namespace PUSN
 
         public void Move(char c)
         {
+
             if(c=='w')
             {
-                lookAt.X += 2.5f;
+                var dir = viewMatrix.Column2.Xyz;
+                lookAt -= moveSpeed * dir;
             }
             if(c=='s')
             {
-                lookAt.X -= 2.5f;
+                var dir = viewMatrix.Column2.Xyz;
+                lookAt += moveSpeed * dir;
             }
             if (c == 'a')
             {
-                lookAt.Y += 2.5f;
+                var dir = viewMatrix.Column0.Xyz;
+                lookAt -= moveSpeed * dir;
             }
             if (c == 'd')
             {
-                lookAt.Y -= 2.5f;
+                var dir = viewMatrix.Column0.Xyz;
+                lookAt += moveSpeed * dir;
             }
             UpdateView();
         }
