@@ -42,6 +42,7 @@ namespace PUSN.SceneModels
         public Texture valTex;
         public TextureViewer TexViewer;
         public ShaderGeometry dot, line;
+        public bool showMaterial;
 
         // Trzeba to zassać z głownego okna
         public Shader TexShader;
@@ -105,6 +106,8 @@ namespace PUSN.SceneModels
 
             tool.Sampler = heightMap.sampler;
             TexViewer = new TextureViewer();
+
+            showMaterial = true;
             //heightMap = new Texture(Res.X+1,Res.Y+1,4);   
             GenerateFramebuffer();
             GenerateVAO();
@@ -406,21 +409,24 @@ namespace PUSN.SceneModels
 
         public void Render(Shader shader, Matrix4 View, Matrix4 Perspective,Vector3 cameraPos, Vector3 ObjectColor)
         {
-            shader.Use();
-            //int unit = 0;
-            heightMap.Use();
-            woodTex.Use();
-            shader.SetMatrix4("model", ModelMatrix);
-            shader.SetMatrix4("display", DisplayMatrix);
-            shader.SetMatrix4("view", View);
-            shader.SetMatrix4("projection", Perspective);
-            shader.SetVec3("objectColor", ObjectColor);  //uniform vec3 objectColor;
-            shader.SetVec3("viewPos", cameraPos);
-            shader.SetInt("heights", heightMap.sampler);
-            shader.SetInt("colorTex", woodTex.sampler);
-            GL.BindVertexArray(VertexArrayObject);
-            GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);    //PrimitiveType.Triangles
-            GL.BindVertexArray(0);
+            if(showMaterial)
+            {
+                shader.Use();
+                //int unit = 0;
+                heightMap.Use();
+                woodTex.Use();
+                shader.SetMatrix4("model", ModelMatrix);
+                shader.SetMatrix4("display", DisplayMatrix);
+                shader.SetMatrix4("view", View);
+                shader.SetMatrix4("projection", Perspective);
+                shader.SetVec3("objectColor", ObjectColor);  //uniform vec3 objectColor;
+                shader.SetVec3("viewPos", cameraPos);
+                shader.SetInt("heights", heightMap.sampler);
+                shader.SetInt("colorTex", woodTex.sampler);
+                GL.BindVertexArray(VertexArrayObject);
+                GL.DrawElements(PrimitiveType.Triangles, IndicesCount, DrawElementsType.UnsignedInt, 0);    //PrimitiveType.Triangles
+                GL.BindVertexArray(0);
+            }
         }
 
         public void setHeight(int i, int j, float h)    //set height in i column and j row

@@ -27,6 +27,8 @@ namespace PUSN
         public bool instant;
         public Texture valTex;
         public Label ErrorLabel;
+        private Path path;
+        public bool showPath;
 
         // Make sure another thread is made later that's gonna call Run() function (so when there is selected 1 second time beetween next two milling points all of the other program like camera or UI is not going to lag)
         ShaderGeometry line, dot;
@@ -50,11 +52,14 @@ namespace PUSN
             pause = false;
             stop = false;
             instant = false;
+            path = new Path();
+            showPath = true;
         }
 
         public void SetData(List<Vector3> positions, float r, bool s) 
         {
             this.positions = positions;
+            path.AddPoints(positions);
             PosNum = this.positions.Count;
             CurrentRadius = r;
             Spherical = s;
@@ -91,8 +96,12 @@ namespace PUSN
             terrain.RenderToHeight(new Vector3(-120, -120, 34), new Vector3(-120, 120, 34), 16, dot, thickShader, true);
         }
 
-        public void Run(float currentMS)
+        public void Run(float currentMS, Shader pathShader, Matrix4 view, Matrix4 perspective)
         {
+            if(showPath)
+            {
+                path.Draw(pathShader, view, perspective);
+            }
             if(run)
             {
                 if(instant)

@@ -131,6 +131,7 @@
                         <TextBox Text="{Binding ElementName=CutterHeight, Path=Value, UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource TextboxStyle}" />
                         <Slider  Style="{StaticResource HeightSlider}" Name="CutterHeight" Value="40.0" ValueChanged="CutterHeight_ValueChanged"/>
                     </DockPanel>
+                    <CheckBox Name="ShowMaterial" Content="Show" Margin="10,2,5,2" IsChecked="True"  Click="ShowMaterial_Click"/>
                     <Button x:Name="SetMaterial" Content="Set"  Margin="10,5,10,5" Click="SetMaterial_Click"/>
 
                 </StackPanel>
@@ -146,9 +147,10 @@
                     </DockPanel>
                     <Button x:Name="StartSimulationButton" Content="Start" Margin="10,5,10,5" Click="StartSimulationButton_Click"/>
                     <Button x:Name="InstantSimulationButton" Content="Instant" Margin="10,5,10,5" Click="InstantSimulationButton_Click"/>
+                    <CheckBox Name="Paths" Content="Paths" Margin="10,2,5,2" IsChecked="True"  Click="Paths_Click"/>
                     <Label Content="Error: Undetected" Name="ErrorLabel" Foreground="Green"/>
                 </StackPanel>
-            </GroupBox>
+            </GroupBox> 
 
             <GroupBox Header="Tool Parameters" Margin="5,0,5,0">
                 <StackPanel>
@@ -165,8 +167,8 @@
                         <Slider  Style="{StaticResource RadiusSlider}" Name="ToolHeight" Value="80"/>
                     </DockPanel>
 
-                    <CheckBox Name="FlatCheck" Content="Flat" Margin="10,2,5,2" Click="FlatCheck_Click"/>
 
+                    <CheckBox Name="FlatCheck" Content="Flat" Margin="10,2,5,2" IsChecked="False"  Click="FlatCheck_Click"/>
                     <Button x:Name="SetTool" Content="Set"  Margin="10,5,10,5" Click="SetTool_Click"/>
                 </StackPanel>
             </GroupBox>

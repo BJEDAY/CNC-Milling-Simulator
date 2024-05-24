@@ -233,6 +233,18 @@ namespace PUSN
             terrain.tool.CuttingPartHeight = (float)CutterHeight.Value;
         }
 
+        private void Paths_Click(object sender, RoutedEventArgs e)
+        {
+            if (simulationController == null) return;
+            simulationController.showPath = (bool)Paths.IsChecked;
+        }
+
+        private void ShowMaterial_Click(object sender, RoutedEventArgs e)
+        {
+            if(terrain == null) return;
+            terrain.showMaterial = (bool)ShowMaterial.IsChecked;
+        }
+
         //private void ResetValidation_Click(object sender, RoutedEventArgs e)
         //{
         //    // check value before reset
@@ -334,7 +346,7 @@ namespace PUSN
             GL.Viewport(0, 0, (int)OpenTkControl.ActualWidth, (int)OpenTkControl.ActualHeight);
             //tool.Draw(dotShader, thickLineShader);
             //tool.Update(tool.start + new Vector3(0.01f, 0, 0), tool.end + new Vector3(0.01f, 0, 0), tool.Radius + 0.01f);
-            simulationController.Run((float)currentTime);
+            simulationController.Run((float)currentTime, shader,camera.viewMatrix,camera.projectionMatrix);
         }
 
         private void RenderToTexture(Vector3 start,  Vector3 end, float r)
